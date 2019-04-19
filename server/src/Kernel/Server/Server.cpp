@@ -45,7 +45,7 @@ std::string Server::getNextConnnection()
         fprintf(stderr,"ERROR readding from the socket\n");
         exit(6);
     }
-    this->n_ = write(this->newsockfd_,"OK",18);
+    this->n_ = write(this->newsockfd_, ACK,18);
     
     if (this->n_ < 0){
         fprintf(stderr,"ERROR writing to the socket\n");

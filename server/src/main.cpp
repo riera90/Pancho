@@ -3,10 +3,10 @@
 int main()
 {
     Server* server = new Server(8000);
-    std::string retval;
+    std::string command;
     while (true){
-        retval = server->getNextConnnection();
-        std::cout << "retval: " << retval << '\n';
+        command = server->getNextConnnection();
+        std::cout << "command: <"<< command <<">\n";
     }
     free(server);
     return 0;
