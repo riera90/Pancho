@@ -5,8 +5,8 @@
 
 #define STASSID "ssid"
 #define STAPSK  "pasword"
-#define HOSTNAME "Alarm_module_1"
-#define SERVER "server ip"
+#define HOSTNAME "alarm_1"
+#define SERVER "server_ip"
 #define SERVER_PORT 8000
 #define PORT 1
 #define BAUD_RATE 9600
@@ -52,7 +52,7 @@ void display_on_lcd(const char* payload)
  */
 void sleep_atmega()
 {
-    display_on_lcd("going to sleep");
+    Serial.print("14going to sleep\0");
     delay(2000);
     digitalWrite(2, LOW);
 }
@@ -157,8 +157,18 @@ void setup() {
     WiFi.begin(STASSID, STAPSK);
     
     // checks if the ESP is connected to the network, if not, wait until it is
-    while ( WiFi.status() != WL_CONNECTED ) {
-        delay(5);
+    for (int i = 0; WiFi.status() != WL_CONNECTED; i++) {
+        if (i > 1000) { // 10000 ns if after 10 seconds if it si not connected
+            bzero((char*) &buffer, sizeof(buffer));
+            strcat(buffer, "couldn't connect\nto ");
+            strcat(buffer, STASSID);
+            strcat(buffer, "\0");            
+            display_on_lcd(buffer);
+            delay(3000);
+            display_on_lcd("reseting board\0");
+            while (true); // reset the board (watchdog kicks in)
+        }
+        delay(10);
     }
     
     // begin the server at the ESP
