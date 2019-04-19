@@ -3,58 +3,46 @@
 #include <ESP8266WiFi.h>
 
 
-#define STASSID "Casa-I"
-#define STAPSK  "vamosaconectar"
-#define HOSTNAME "ESP8266test"
-#define SERVER "192.168.10.112"
+#define STASSID "ssid"
+#define STAPSK  "pasword"
+#define HOSTNAME "Alarm_module_1"
+#define SERVER "server ip"
 #define SERVER_PORT 8000
-#define PORT 80
+#define PORT 1
 #define BAUD_RATE 9600
 #define ACK "OK"
+#define BUFFER_LENGTH 255
 
 
 WiFiServer server(PORT);
-char buffer[256];
+char buffer[BUFFER_LENGTH+1];
 int status = WL_IDLE_STATUS;
-int counter;
+int counter = 0;
 
 
 /**
- * pooling method of the TCP/IP server at the ESP
+ * wakes up the ATMega and lcd display
  */
-void tcp_server_pooling()
+void wake_up_atmega()
 {
-    // creates and ckecks if a client is connected
-    WiFiClient client = server.available();
-    if (client){
-        // if it is connected, wake up the ATMMega
-        wake_up_atmega();
-        // clears the buffer and write to it the request
-        bzero((char*) &buffer, sizeof(buffer));
-        for (int i = 0; client.available() > 0; i++){
-            buffer[i] = (char)client.read();
-            buffer[i+1] = '\0';
-        }
-        // handle the command and return the ACK or error message
-        client.write(hanndle_command(buffer)))
-    }
+    counter = 0;
+    digitalWrite(2, HIGH);
+    delay(1000);
 }
 
 
 /**
- * pooling method of the button at the ESP
+ * displays a formated text into the lcd display
+ * |n is accepted and |0 is requiered at the end of the input
  */
-void button_press_pooling()
+void display_on_lcd(const char* payload)
 {
-    if ( digitalRead(0) == LOW ){
-        wake_up_atmega();
-        for (int i = 0; !send_message_to_server("/stop_alarm"); i++){
-            if (i < 10){
-                display_on_lcd("couldn't connect\nto server\0");
-                return;
-            }
-        }
-        display_on_lcd("alarm stopped\n");
+    wake_up_atmega();
+    int size;
+    for (size = 0; payload[size] != '\0' && size < 64; size++);
+    Serial.print(size);
+    for (int i = 0; i < size; i++) {
+        Serial.print(payload[i]);
     }
 }
 
@@ -71,38 +59,12 @@ void sleep_atmega()
 
 
 /**
- * wakes up the ATMega and lcd display
- */
-void wake_up_atmega()
-{
-    counter = 0;
-    digitalWrite(2, HIGH);
-    delay(1000);
-}
-
-
-/**
  * Handles the command for the ESP
  */
 const char* hanndle_command(const char* command)
 {
     display_on_lcd(command);
     return ACK;
-}
-
-
-/**
- * displays a formated text into the lcd display
- * |n is accepted and |0 is requiered at the end of the input
- */
-void display_on_lcd(char* payload)
-{
-    int size;
-    for (size = 0; payload[size] != '\0' && size < 64; size++);
-    Serial.print(size);
-    for (size_t i = 0; i < size; i++) {
-        Serial.print(payload[i]);
-    }
 }
 
 
@@ -143,6 +105,41 @@ bool send_message_to_server(const char* payload)
 }
 
 
+/**
+ * pooling method of the TCP/IP server at the ESP
+ */
+void tcp_server_pooling()
+{
+    // creates and ckecks if a client is connected
+    WiFiClient client = server.available();
+    if (client){
+        // clears the buffer and write to it the request
+        bzero((char*) &buffer, sizeof(buffer));
+        for (int i = 0; client.available() > 0; i++){
+            buffer[i] = (char)client.read();
+            buffer[i+1] = '\0';
+        }
+        // handle the command and return the ACK or error message
+        client.write(hanndle_command(buffer));
+    }
+}
+
+
+/**
+ * pooling method of the button at the ESP
+ */
+void button_press_pooling()
+{
+    if ( digitalRead(0) == LOW ){
+        for (int i = 0; !send_message_to_server("/stop_alarm"); i++){
+            if (i < 10){
+                display_on_lcd("couldn't connect\nto server\0");
+                return;
+            }
+        }
+        display_on_lcd("alarm stopped\n");
+    }
+}
 
 
 void setup() {
@@ -175,9 +172,6 @@ void setup() {
     strcat(buffer, STASSID);
     strcat(buffer, "\0");
     display_on_lcd(buffer);
-    
-    // sets the counter to zero (sleep counter)
-    counter = 0;
 }
 
 
