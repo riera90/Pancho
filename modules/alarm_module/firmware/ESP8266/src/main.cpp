@@ -3,10 +3,10 @@
 #include <ESP8266WiFi.h>
 
 
-#define STASSID "ssid"
-#define STAPSK  "pasword"
+#define STASSID "Casa-I"
+#define STAPSK  "vamosaconectar"
 #define HOSTNAME "alarm_1"
-#define SERVER "server_ip"
+#define SERVER "192.168.10.112"
 #define SERVER_PORT 8000
 #define PORT 1
 #define BAUD_RATE 9600
@@ -131,13 +131,25 @@ void tcp_server_pooling()
 void button_press_pooling()
 {
     if ( digitalRead(0) == LOW ){
-        for (int i = 0; !send_message_to_server("/stop_alarm"); i++){
+        delay(800);
+        bzero((char*) &buffer, sizeof(buffer));
+        strcat(buffer, "/");
+        strcat(buffer, HOSTNAME);
+        if (digitalRead(0) == LOW ){
+            strcat(buffer, "/button/hold");
+        }
+        else{
+            strcat(buffer, "/button/press");
+        }
+        
+        for (int i = 0; !send_message_to_server(buffer); i++){
             if (i < 10){
-                display_on_lcd("couldn't connect\nto server\0");
+                display_on_lcd("couldn't connect\nwith server\0");
                 return;
             }
         }
         display_on_lcd("alarm stopped\n");
+        while (digitalRead(0) == LOW);//wait until the button is release
     }
 }
 
@@ -177,8 +189,7 @@ void setup() {
     // display what the ESP hostname is and where is connected
     bzero((char*) &buffer, sizeof(buffer));
     strcat(buffer, HOSTNAME);
-    strcat(buffer, "\n");
-    strcat(buffer, "at ");
+    strcat(buffer, "\nat ");
     strcat(buffer, STASSID);
     strcat(buffer, "\0");
     display_on_lcd(buffer);
@@ -187,15 +198,17 @@ void setup() {
 
 void loop()
 {
-    // each 100 ns increment the counter if the system is fully awake
-    delay(100);
-    if (counter == 100) {
-        sleep_atmega();
+    // each 1 ns increment the counter if the system is fully awake
+    delay(1);
+    if (counter < 10000) {
         counter++;
+    }else{
+        if (counter == 10000) {
+            sleep_atmega();
+            counter++;
+        }
     }
-    if (counter < 100) {
-        counter++;
-    }
+    
     
     // call both pooling funcitons
     tcp_server_pooling();
