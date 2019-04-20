@@ -1,0 +1,14 @@
+version: "3"
+services:
+  speaker_client:
+    build: .
+    hostname: speaker_client
+    network_mode: host
+    restart: always
+    environment:
+        PULSE_SERVER : pulseaudio
+    volumes:
+        - /tmp/.X11-unix:/tmp/.X11-unix
+        - /dev/snd:/dev/snd
+    devices:
+        - "/dev/snd:/dev/snd"

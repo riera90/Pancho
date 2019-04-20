@@ -10,3 +10,6 @@ It even works as a Spotify speaker! (thanks to [raspotify](https://github.com/dt
 ## You will need
 - A Raspberry pi with a audio jack
 - Some speakers
+
+## [Watch my video!]()
+comming soon

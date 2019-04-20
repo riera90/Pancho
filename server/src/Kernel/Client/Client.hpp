@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <string>
+#include "shared.hpp"
 
 
 std::string sendMessageToServer(const char* host,

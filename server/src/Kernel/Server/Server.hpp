@@ -14,8 +14,9 @@
 #include "CommandHandler.hpp"
 #include "CommandHandlerResponse.hpp"
 #include "Client.hpp"
+#include "shared.hpp"
 
-#define ACK "OK"
+
 
 class Server
 {

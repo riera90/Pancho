@@ -4,7 +4,7 @@
 
 int main()
 {
-    Server* server = new Server(8000);
+    Server* server = new Server(SERVER_PORT);
     std::string command;
     while (true){
         command = server->handleNextConnnection();

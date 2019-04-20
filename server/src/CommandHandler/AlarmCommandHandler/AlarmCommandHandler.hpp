@@ -5,6 +5,7 @@
 #include "Client.hpp"
 #include "CommandHandlerResponse.hpp"
 #include "CommandSplitter.hpp"
+#include "shared.hpp"
 
 namespace AlarmCommandHandler
 {

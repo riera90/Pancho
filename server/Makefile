@@ -17,11 +17,11 @@ EXCLUDED_FILES  :=
 # binary file name
 BIN_NAME:=bin.out
 # binary arguments (if executed by the makefile).
-BIN_ARGUMENTS:=hi!
+BIN_ARGUMENTS:=
 # compiler
 CXX:=g++
 # compilation flags
-CXXFLAGS:=-Wpedantic
+CXXFLAGS:=-Wpedantic -L vlc
 
 # [YES/NO]
 EXECUTE_AFTER_COMPILATION:=NO

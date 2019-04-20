@@ -3,6 +3,7 @@
 
 #include "AlarmCommandHandler.hpp"
 #include "CommandSplitter.hpp"
+#include "shared.hpp"
 
 namespace CommandHandler
 {   

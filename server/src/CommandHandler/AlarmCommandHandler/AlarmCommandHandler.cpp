@@ -12,7 +12,7 @@ const CommandHandlerResponse AlarmCommandHandler::handle(std::string command)
     std::string module_name = utils::splitCommand(command);
     
     CommandHandlerResponse response;
-    response.ack = "OK";
+    response.ack = ACK_OK;
     response.packages.push_back(command);
     
     if (command == "/button/press"){

@@ -7,8 +7,8 @@
 #define STAPSK  "vamosaconectar"
 #define HOSTNAME "alarm_1"
 #define SERVER "192.168.10.112"
-#define SERVER_PORT 8000
-#define PORT 1
+#define SERVER_PORT 7707
+#define PORT 7708
 #define BAUD_RATE 9600
 #define ACK "OK"
 #define BUFFER_LENGTH 255

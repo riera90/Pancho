@@ -8,7 +8,7 @@ std::string sendMessageToServer(const char* host,
     int sockfd, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
-    char buffer[256];
+    char buffer[BUFFER_LENGTH+1];
     
     if (portno < 0 || strcmp(host, "") == 0) {
         fprintf(stderr,"ERROR invalid hostname or port\n");
@@ -47,8 +47,8 @@ std::string sendMessageToServer(const char* host,
         exit(5);
     }
     
-    bzero(buffer,256);
-    n = read(sockfd, buffer, 255);
+    bzero(buffer,BUFFER_LENGTH+1);
+    n = read(sockfd, buffer, BUFFER_LENGTH);
     
     
     if (n < 0) {
