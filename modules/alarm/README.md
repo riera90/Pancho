@@ -4,10 +4,10 @@
 **Economic cost: low to medium (15-20€)**
 
 
-## description
+## Description
 An alarm snooze/stop button and a display to show the get out of home time and whatever information you want, like weather, and traffic
 
-## components
+## Components
 - resistors:
     + 1x 220Ω
     + 2x 510Ω
@@ -27,14 +27,17 @@ An alarm snooze/stop button and a display to show the get out of home time and w
 - 1x 28 pin dip socket
 - 1x 2x4 pin socket
     
-## extra consumables
+## Extra consumables
 - 1x 5V power supply
 - dot matrix PCB
 - wires
 - solder
 
-## tools
+## Tools
 - soldering iron
 - Multimeter
 - USB to TTL converter
 - an arduino uno
+
+## Diagram
+![](diagram.png)
