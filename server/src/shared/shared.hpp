@@ -6,4 +6,6 @@
 #define SERVER_PORT 7707
 #define NODE_PORT 7708
 
+#define SPEAKERS "speakers"
+
 #endif

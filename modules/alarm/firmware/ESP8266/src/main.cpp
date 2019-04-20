@@ -3,8 +3,8 @@
 #include <ESP8266WiFi.h>
 
 
-#define STASSID "Casa-I"
-#define STAPSK  "vamosaconectar"
+#define STASSID "ssid"
+#define STAPSK  "paswd"
 #define HOSTNAME "alarm_1"
 #define SERVER "192.168.10.112"
 #define SERVER_PORT 7707

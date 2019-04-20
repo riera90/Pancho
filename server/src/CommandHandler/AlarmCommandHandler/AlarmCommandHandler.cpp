@@ -13,14 +13,16 @@ const CommandHandlerResponse AlarmCommandHandler::handle(std::string command)
     
     CommandHandlerResponse response;
     response.ack = ACK_OK;
-    response.packages.push_back(command);
     
     if (command == "/button/press"){
-        response.packages.push_back("alarm snoozed");
+        sendMessageToServer(SPEAKERS, NODE_PORT, "/music/stop");
+        response.packages.push_back("tren a las xx:xx\nsal a las xx:xx");
+        response.packages.push_back("Meteorologia:\ncalor");
         return response;
     }
     
     else if (command == "/button/hold"){
+        sendMessageToServer(SPEAKERS, NODE_PORT, "/music/stop");
         response.packages.push_back("alarm stopped");
         return response;
     }

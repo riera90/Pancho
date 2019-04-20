@@ -6,6 +6,7 @@
 #include "CommandHandlerResponse.hpp"
 #include "CommandSplitter.hpp"
 #include "shared.hpp"
+#include "TrainController.hpp"
 
 namespace AlarmCommandHandler
 {
