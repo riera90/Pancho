@@ -1,4 +1,4 @@
-#include "client.hpp"
+#include "Client.hpp"
 
 std::string sendMessageToServer(const char* host,
                                 int portno,

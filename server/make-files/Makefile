@@ -13,18 +13,36 @@ run : ./output/bin.out
 ./output/bin.out : ./src/main.cpp  ./tmp/libproject.a
 	@echo "\tCompiling binary."
 	@mkdir -p ./output
-	@g++ ./src/main.cpp -Wpedantic -I ./src -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Controller -I ./src/Utils  -o ./output/bin.out ./tmp/libproject.a 
+	@g++ ./src/main.cpp -Wpedantic -I ./src -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Utils  -o ./output/bin.out ./tmp/libproject.a 
 
 
-./tmp/libproject.a : ./tmp/Kernel/Server/Server.o 
+./tmp/libproject.a : ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o ./tmp/CommandHandler/CommandHandler.o ./tmp/Kernel/Server/Server.o ./tmp/Kernel/Client/Client.o 
 	@echo "\tBuilding project library."
-	@ar -rsc ./tmp/libproject.a ./tmp/Kernel/Server/Server.o 
+	@ar -rsc ./tmp/libproject.a ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o ./tmp/CommandHandler/CommandHandler.o ./tmp/Kernel/Server/Server.o ./tmp/Kernel/Client/Client.o 
+
+
+./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o : ./src/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.cpp ./src/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.hpp
+	@echo "\tPrecompiling object for ./src/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.cpp."
+	@mkdir -p ./tmp/CommandHandler/AlarmCommandHandler
+	@g++ -c ./src/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.cpp -I ./src -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Utils  -o ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o;
+
+
+./tmp/CommandHandler/CommandHandler.o : ./src/CommandHandler/CommandHandler.cpp ./src/CommandHandler/CommandHandler.hpp
+	@echo "\tPrecompiling object for ./src/CommandHandler/CommandHandler.cpp."
+	@mkdir -p ./tmp/CommandHandler
+	@g++ -c ./src/CommandHandler/CommandHandler.cpp -I ./src -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Utils  -o ./tmp/CommandHandler/CommandHandler.o;
 
 
 ./tmp/Kernel/Server/Server.o : ./src/Kernel/Server/Server.cpp ./src/Kernel/Server/Server.hpp
 	@echo "\tPrecompiling object for ./src/Kernel/Server/Server.cpp."
 	@mkdir -p ./tmp/Kernel/Server
-	@g++ -c ./src/Kernel/Server/Server.cpp -I ./src -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Controller -I ./src/Utils  -o ./tmp/Kernel/Server/Server.o;
+	@g++ -c ./src/Kernel/Server/Server.cpp -I ./src -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Utils  -o ./tmp/Kernel/Server/Server.o;
+
+
+./tmp/Kernel/Client/Client.o : ./src/Kernel/Client/Client.cpp ./src/Kernel/Client/Client.hpp
+	@echo "\tPrecompiling object for ./src/Kernel/Client/Client.cpp."
+	@mkdir -p ./tmp/Kernel/Client
+	@g++ -c ./src/Kernel/Client/Client.cpp -I ./src -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Utils  -o ./tmp/Kernel/Client/Client.o;
 
 
 .PHONY : googletest

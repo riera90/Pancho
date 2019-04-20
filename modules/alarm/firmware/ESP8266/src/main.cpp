@@ -86,8 +86,8 @@ bool send_message_to_server(const char* payload)
     bzero((char*) &buffer, sizeof(buffer)); 
     // waits for the tresponse
     for (int i = 0; !client.available(); i++){ 
-        delay(50);
-        if (i > 10) // timeout at 500 ns
+        delay(5);
+        if (i > 1000) // timeout at 5000 ns
             return false; 
     };
     // reads the response into buffer
@@ -132,7 +132,7 @@ void button_press_pooling()
 {
     if ( digitalRead(0) == LOW ){
         bzero((char*) &buffer, sizeof(buffer));
-        strcat(buffer, "/");
+        strcat(buffer, "/alarm/");
         strcat(buffer, HOSTNAME);
         delay(800);
         if (digitalRead(0) == LOW ){
@@ -192,14 +192,13 @@ void setup() {
     strcat(buffer, STASSID);
     strcat(buffer, "\0");
     display_on_lcd(buffer);
-    wifi_set_sleep_type(LIGHT_SLEEP_T);
 }
 
 
 void loop()
 {
-    // each 1 ns increment the counter if the system is fully awake
-    delay(1);
+    // each 3 ns increment the counter if the system is fully awake
+    delay(3);
     if (counter < 10000) {
         counter++;
     }else{

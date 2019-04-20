@@ -29,7 +29,7 @@ Server::Server (int portno = -1)
 }
 
 
-std::string Server::getNextConnnection()
+std::string Server::handleNextConnnection()
 {
     this->newsockfd_ = accept(this->sockfd_,
                             (struct sockaddr *) &this->cli_addr_,
@@ -45,13 +45,21 @@ std::string Server::getNextConnnection()
         fprintf(stderr,"ERROR readding from the socket\n");
         exit(6);
     }
-    this->n_ = write(this->newsockfd_, ACK,18);
+    CommandHandlerResponse response;
+    response = CommandHandler::handle(this->buffer_);
+    this->n_ = write(this->newsockfd_, response.ack.c_str(), 18);
+    if (strcmp(response.package.c_str(), "") != 0){
+        sendMessageToServer(inet_ntoa(this->cli_addr_.sin_addr), 1, response.package.c_str());
+    }
     
     if (this->n_ < 0){
         fprintf(stderr,"ERROR writing to the socket\n");
         exit(7);
     }
-    
+    strcat(this->buffer_, ":");
+    strcat(this->buffer_, response.ack.c_str());
+    strcat(this->buffer_, "->");
+    strcat(this->buffer_, response.package.c_str());
     return this->buffer_;
 }
 

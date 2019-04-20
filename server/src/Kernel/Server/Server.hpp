@@ -8,8 +8,12 @@
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <string>
-#include <iostream>
+
+#include "CommandHandler.hpp"
+#include "CommandHandlerResponse.hpp"
+#include "Client.hpp"
 
 #define ACK "OK"
 
@@ -23,7 +27,7 @@ class Server
 
     public:
         Server (int portno);
-        std::string getNextConnnection();
+        std::string handleNextConnnection();
         ~Server ();
 };
 
