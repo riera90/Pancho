@@ -6,7 +6,7 @@
 #define STASSID "ssid"
 #define STAPSK  "passwd"
 #define HOSTNAME "alarm_1"
-#define SERVER "server-ip"
+#define SERVER "ip"
 #define SERVER_PORT 8000
 #define PORT 1
 #define BAUD_RATE 9600
@@ -148,7 +148,6 @@ void button_press_pooling()
                 return;
             }
         }
-        display_on_lcd("alarm stopped\n");
         while (digitalRead(0) == LOW);//wait until the button is release
     }
 }
@@ -193,6 +192,7 @@ void setup() {
     strcat(buffer, STASSID);
     strcat(buffer, "\0");
     display_on_lcd(buffer);
+    wifi_set_sleep_type(LIGHT_SLEEP_T);
 }
 
 

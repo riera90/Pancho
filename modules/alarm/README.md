@@ -1,4 +1,10 @@
-# description
+# Nightstand display and alarm stopper
+
+**Difficulty: medium**  
+**Economic cost: low to medium (15-20€)**
+
+
+## description
 An alarm snooze/stop button and a display to show the get out of home time and whatever information you want, like weather, and traffic
 
 ## components
