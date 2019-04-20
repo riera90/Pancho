@@ -4,10 +4,14 @@
 #include <string>
 #include "Client.hpp"
 #include "CommandHandlerResponse.hpp"
+#include "CommandSplitter.hpp"
 
 namespace AlarmCommandHandler
 {
     const CommandHandlerResponse handle(std::string command);
+    
+    const CommandHandlerResponse buttonHandle(std::string command);
+    
 }
 
 #endif

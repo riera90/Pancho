@@ -1,6 +1,5 @@
 #include "Server.hpp"
 
-
 Server::Server (int portno = -1)
 {
     if (portno < 0) {
@@ -48,8 +47,11 @@ std::string Server::handleNextConnnection()
     CommandHandlerResponse response;
     response = CommandHandler::handle(this->buffer_);
     this->n_ = write(this->newsockfd_, response.ack.c_str(), 18);
-    if (strcmp(response.package.c_str(), "") != 0){
-        sendMessageToServer(inet_ntoa(this->cli_addr_.sin_addr), 1, response.package.c_str());
+    for (int i = 0; i < response.packages.size(); i++){
+        std::string ack = "";
+        for (int tries = 0; ack != "OK" && tries < 10; tries++){
+            ack = sendMessageToServer(inet_ntoa(this->cli_addr_.sin_addr), 1, response.packages[i].c_str());
+        }
     }
     
     if (this->n_ < 0){
@@ -58,8 +60,10 @@ std::string Server::handleNextConnnection()
     }
     strcat(this->buffer_, ":");
     strcat(this->buffer_, response.ack.c_str());
-    strcat(this->buffer_, "->");
-    strcat(this->buffer_, response.package.c_str());
+    for (int i = 0; i < response.packages.size(); i++){
+        strcat(this->buffer_, "|");
+        strcat(this->buffer_, response.packages[i].c_str());
+    }    
     return this->buffer_;
 }
 

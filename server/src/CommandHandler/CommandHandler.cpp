@@ -1,21 +1,29 @@
 #include "CommandHandler.hpp"
+#include <iostream>
 
 const CommandHandlerResponse CommandHandler::handle(std::string command)
 {
-    command = command.substr(1, command.length());
-    std::string module = command.substr(0, command.find('/'));
-    command = command.substr(command.find('/'), command.length());
+    if (!utils::isCommand(command)){
+        CommandHandlerResponse response;
+        response.ack = "NOT A COMMAND";
+        return response;
+    }
     
-    CommandHandlerResponse response;
+    std::string module = utils::splitCommand(command);
     
-    if (module == "alarm"){
+    
+    if (module == "/alarm"){
         return AlarmCommandHandler::handle(command);
     }
-    else if (module == "speaker"){
+    
+    else if (module == "/speaker"){
+        CommandHandlerResponse response;
         response.ack = "not yet implemented";
         return response;
     }
+    
     else{
+        CommandHandlerResponse response;
         response.ack = "module not found";
         return response;
     }

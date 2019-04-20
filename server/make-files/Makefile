@@ -16,9 +16,9 @@ run : ./output/bin.out
 	@g++ ./src/main.cpp -Wpedantic -I ./src -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Utils  -o ./output/bin.out ./tmp/libproject.a 
 
 
-./tmp/libproject.a : ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o ./tmp/CommandHandler/CommandHandler.o ./tmp/Kernel/Server/Server.o ./tmp/Kernel/Client/Client.o 
+./tmp/libproject.a : ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o ./tmp/CommandHandler/CommandHandler.o ./tmp/Kernel/Server/Server.o ./tmp/Kernel/Client/Client.o ./tmp/Utils/CommandSplitter.o 
 	@echo "\tBuilding project library."
-	@ar -rsc ./tmp/libproject.a ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o ./tmp/CommandHandler/CommandHandler.o ./tmp/Kernel/Server/Server.o ./tmp/Kernel/Client/Client.o 
+	@ar -rsc ./tmp/libproject.a ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o ./tmp/CommandHandler/CommandHandler.o ./tmp/Kernel/Server/Server.o ./tmp/Kernel/Client/Client.o ./tmp/Utils/CommandSplitter.o 
 
 
 ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o : ./src/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.cpp ./src/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.hpp
@@ -43,6 +43,12 @@ run : ./output/bin.out
 	@echo "\tPrecompiling object for ./src/Kernel/Client/Client.cpp."
 	@mkdir -p ./tmp/Kernel/Client
 	@g++ -c ./src/Kernel/Client/Client.cpp -I ./src -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Utils  -o ./tmp/Kernel/Client/Client.o;
+
+
+./tmp/Utils/CommandSplitter.o : ./src/Utils/CommandSplitter.cpp ./src/Utils/CommandSplitter.hpp
+	@echo "\tPrecompiling object for ./src/Utils/CommandSplitter.cpp."
+	@mkdir -p ./tmp/Utils
+	@g++ -c ./src/Utils/CommandSplitter.cpp -I ./src -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Utils  -o ./tmp/Utils/CommandSplitter.o;
 
 
 .PHONY : googletest
