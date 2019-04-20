@@ -1,19 +1,19 @@
 # this Makefile was generated automatically by generic-makefile
 
 .PHONY : target
-target : banner run
-	
-	
-.PHONY : run
-run : ./output/bin.out
-	@echo "\tExecuting binary.\n"
-	@time "./output/bin.out" hi!
+target : banner ./output/bin.out
 	
 	
 ./output/bin.out : ./src/main.cpp  ./tmp/libproject.a
 	@echo "\tCompiling binary."
 	@mkdir -p ./output
 	@g++ ./src/main.cpp -Wpedantic -I ./src -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Utils  -o ./output/bin.out ./tmp/libproject.a 
+	
+	
+.PHONY : run
+run : ./output/bin.out
+	@echo "\tExecuting binary.\n"
+	@time "./output/bin.out" hi!
 
 
 ./tmp/libproject.a : ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o ./tmp/CommandHandler/CommandHandler.o ./tmp/Kernel/Server/Server.o ./tmp/Kernel/Client/Client.o ./tmp/Utils/CommandSplitter.o 
@@ -51,8 +51,9 @@ run : ./output/bin.out
 	@g++ -c ./src/Utils/CommandSplitter.cpp -I ./src -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Utils  -o ./tmp/Utils/CommandSplitter.o;
 
 
-.PHONY : googletest
-googletest : banner  
+.PHONY : googletest banner
+googletest : banner   
+
 
 ./tmp/libgtest.a : ./tmp/gtest_main.o ./tmp/gtest-all.o
 	@echo "\tCompiling googletest library."

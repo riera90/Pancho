@@ -25,9 +25,14 @@ void loop() {
     }
     delay(500);
     
+    
+    
     size = Serial.parseInt();
     // if a package has been read, print the content in the lcd
-    if (size > 0){
+    if (size > 0)
+    {
+        Serial.print('.');
+        
         // clears the lcd display
         lcd.clear();
         // reads the given size of the string from the serial buffer and stores
@@ -51,5 +56,7 @@ void loop() {
                 lcd.print(buffer[i]);
             }
         }
+        // delay 10 seconds between texts
+        delay(5000);
     }
 }

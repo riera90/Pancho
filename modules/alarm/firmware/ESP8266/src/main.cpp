@@ -3,10 +3,10 @@
 #include <ESP8266WiFi.h>
 
 
-#define STASSID "ssid"
-#define STAPSK  "passwd"
+#define STASSID "Casa-I"
+#define STAPSK  "vamosaconectar"
 #define HOSTNAME "alarm_1"
-#define SERVER "ip"
+#define SERVER "192.168.10.112"
 #define SERVER_PORT 8000
 #define PORT 1
 #define BAUD_RATE 9600
@@ -48,6 +48,17 @@ void display_on_lcd(const char* payload)
 
 
 /**
+ * resets the board
+ */
+void reset()
+{
+    delay(5000);
+    display_on_lcd("reseting board\0");
+    while (true); // reset the board (watchdog kicks in)
+}
+
+
+/**
  * sets the ATMega and lcd display to sleep
  */
 void sleep_atmega()
@@ -74,7 +85,7 @@ const char* hanndle_command(const char* command)
  * is returned, true is returned if the conenction was made and an ACK was 
  * recieved.
  */
-bool send_message_to_server(const char* payload)
+std::string send_message_to_server(const char* payload)
 {
     WiFiClient client;
     client.connect(SERVER, SERVER_PORT);
@@ -88,7 +99,7 @@ bool send_message_to_server(const char* payload)
     for (int i = 0; !client.available(); i++){ 
         delay(5);
         if (i > 1000) // timeout at 5000 ns
-            return false; 
+            return "TIMEOUT"; 
     };
     // reads the response into buffer
     for (int i = 0; client.available() > 0; i++){
@@ -98,10 +109,7 @@ bool send_message_to_server(const char* payload)
     // stops the client
     client.stop();
     // checks if the ACK is correct, if it is, return true, else return false
-    if ( strcmp(buffer, "OK") == 0 ){
-        return true;
-    }
-    return false;
+    return buffer;
 }
 
 
@@ -142,9 +150,9 @@ void button_press_pooling()
             strcat(buffer, "/button/press");
         }
         
-        for (int i = 0; !send_message_to_server(buffer); i++){
+        for (int i = 0; send_message_to_server(buffer) != "OK"; i++){
             if (i < 10){
-                display_on_lcd("couldn't connect\nwith the server\0");
+                display_on_lcd("Internal server\nerror\0");
                 return;
             }
         }
@@ -175,9 +183,7 @@ void setup() {
             strcat(buffer, STASSID);
             strcat(buffer, "\0");            
             display_on_lcd(buffer);
-            delay(3000);
-            display_on_lcd("reseting board\0");
-            while (true); // reset the board (watchdog kicks in)
+            reset();
         }
         delay(10);
     }
@@ -192,6 +198,17 @@ void setup() {
     strcat(buffer, STASSID);
     strcat(buffer, "\0");
     display_on_lcd(buffer);
+    for (int i = 0; send_message_to_server("Hello") != "Hello"; i++){
+        if (i < 10){
+            bzero((char*) &buffer, sizeof(buffer));
+            strcat(buffer, "can't connet to\n");
+            strcat(buffer, SERVER);
+            strcat(buffer, "\0");
+            display_on_lcd(buffer);
+            reset();
+        }
+    }
+    display_on_lcd("All Systems Go");
 }
 
 
@@ -199,15 +216,23 @@ void loop()
 {
     // each 3 ns increment the counter if the system is fully awake
     delay(3);
-    if (counter < 10000) {
-        counter++;
-    }else{
-        if (counter == 10000) {
-            sleep_atmega();
+    // if the ATMega is sending information, it is doing things so don't send it to sleep
+    if (Serial.available() > 0) {
+        // clear the buffer, sets the counter co zero and continue pooling.
+        Serial.read();
+        counter = 0;
+    }
+    else{
+        // if it is not sending, it is doing nothing, suspend at 30 secconds (30000ns)
+        if (counter < 10000) {
             counter++;
+        }else{
+            if (counter == 10000) {
+                sleep_atmega();
+                counter++;
+            }
         }
     }
-    
     
     // call both pooling funcitons
     tcp_server_pooling();

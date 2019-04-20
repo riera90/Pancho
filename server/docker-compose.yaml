@@ -1,0 +1,7 @@
+version: "3"
+services:
+  server:
+    build: .
+    hostname: server
+    network_mode: host
+    restart: always

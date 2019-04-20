@@ -44,13 +44,24 @@ std::string Server::handleNextConnnection()
         fprintf(stderr,"ERROR readding from the socket\n");
         exit(6);
     }
-    CommandHandlerResponse response;
-    response = CommandHandler::handle(this->buffer_);
-    this->n_ = write(this->newsockfd_, response.ack.c_str(), 18);
-    for (int i = 0; i < response.packages.size(); i++){
-        std::string ack = "";
-        for (int tries = 0; ack != "OK" && tries < 10; tries++){
-            ack = sendMessageToServer(inet_ntoa(this->cli_addr_.sin_addr), 1, response.packages[i].c_str());
+    
+    if (strcmp(this->buffer_, "Hello") == 0){
+        write(this->newsockfd_, "Hello", 18);
+    }else{
+        CommandHandlerResponse response;
+        response = CommandHandler::handle(this->buffer_);
+        this->n_ = write(this->newsockfd_, response.ack.c_str(), 18);
+        for (int i = 0; i < response.packages.size(); i++){
+            std::string ack = "";
+            for (int tries = 0; ack != "OK" && tries < 10; tries++){
+                ack = sendMessageToServer(inet_ntoa(this->cli_addr_.sin_addr), 1, response.packages[i].c_str());
+            }
+        }
+        strcat(this->buffer_, ":");
+        strcat(this->buffer_, response.ack.c_str());
+        for (int i = 0; i < response.packages.size(); i++){
+            strcat(this->buffer_, "|");
+            strcat(this->buffer_, response.packages[i].c_str());
         }
     }
     
@@ -58,12 +69,7 @@ std::string Server::handleNextConnnection()
         fprintf(stderr,"ERROR writing to the socket\n");
         exit(7);
     }
-    strcat(this->buffer_, ":");
-    strcat(this->buffer_, response.ack.c_str());
-    for (int i = 0; i < response.packages.size(); i++){
-        strcat(this->buffer_, "|");
-        strcat(this->buffer_, response.packages[i].c_str());
-    }    
+    
     return this->buffer_;
 }
 
