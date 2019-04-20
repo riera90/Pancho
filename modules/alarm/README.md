@@ -7,7 +7,9 @@
 ## Description
 An alarm snooze/stop button and a display to show the get out of home time and whatever information you want, like weather, and traffic
 
-## Components
+## You will need
+
+### Components
 - resistors:
     + 1x 220Ω
     + 2x 510Ω
@@ -27,17 +29,25 @@ An alarm snooze/stop button and a display to show the get out of home time and w
 - 1x 28 pin dip socket
 - 1x 2x4 pin socket
     
-## Extra consumables
+### Extra consumables
 - 1x 5V power supply
 - dot matrix PCB
 - wires
 - solder
 
-## Tools
-- soldering iron
+### Tools
+- soldering iron / station
 - Multimeter
 - USB to TTL converter
 - an arduino uno
+- a pc
+
+# How to do it!
+
+## [Watch my video!]()
+comming soon
 
 ## Diagram
 ![](diagram.png)
+
+
