@@ -1,7 +1,7 @@
 # Nightstand display and alarm stopper
 
-**Difficulty: medium**  
-**Economic cost: low to medium (15-20€)**
+**Difficulty: medium-high**  
+**Economic cost: low-medium (15-20€)**
 
 
 ## Description
