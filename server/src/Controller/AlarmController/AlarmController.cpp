@@ -1,16 +1,16 @@
 #include "AlarmController.hpp"
 
-Alarm getNextAlarm()
+Alarm AlarmController::getNextAlarm()
 {
     return Alarm();
 }
 
-Alarm getNextAlarm(tm time)
+Alarm AlarmController::getNextAlarm(tm time)
 {
     return Alarm();
 }
 
-Alarm getNextAlarm(time_t time)
+Alarm AlarmController::getNextAlarm(time_t time)
 {
     return Alarm();
 }

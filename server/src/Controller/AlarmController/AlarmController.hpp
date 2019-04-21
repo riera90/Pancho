@@ -5,8 +5,11 @@
 #include "shared.hpp"
 #include "Alarm.hpp"
 
-Alarm getNextAlarm();
-Alarm getNextAlarm(tm time);
-Alarm getNextAlarm(time_t time);
+namespace AlarmController
+{
+    Alarm getNextAlarm();
+    Alarm getNextAlarm(tm time);
+    Alarm getNextAlarm(time_t time);
+}
 
 #endif

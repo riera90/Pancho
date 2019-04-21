@@ -4,6 +4,10 @@
 #include <string>
 #include "shared.hpp"
 
-std::string getWeatherReport();
+namespace WeatherController
+{
+    std::string getReport();
+}
+
 
 #endif

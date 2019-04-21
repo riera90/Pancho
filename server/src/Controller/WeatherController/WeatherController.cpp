@@ -1,6 +1,6 @@
 #include "WeatherController.hpp"
 
-std::string getWeatherReport()
+std::string WeatherController::getReport()
 {
     return "soleado";
 }

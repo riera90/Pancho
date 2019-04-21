@@ -3,9 +3,10 @@
 #include <ESP8266WiFi.h>
 
 
-#define STASSID "ssid"
-#define STAPSK  "paswd"
-#define HOSTNAME "alarm_1"
+#define STASSID "Casa-I"
+#define STAPSK  "vamosaconectar"
+#define HOSTNAME "nightstand ESP"
+#define NODE_NAME "nightstand"
 #define SERVER "192.168.10.112"
 #define SERVER_PORT 7707
 #define PORT 7708
@@ -140,8 +141,8 @@ void button_press_pooling()
 {
     if ( digitalRead(0) == LOW ){
         bzero((char*) &buffer, sizeof(buffer));
-        strcat(buffer, "/alarm/");
-        strcat(buffer, HOSTNAME);
+        strcat(buffer, "/");
+        strcat(buffer, NODE_NAME);
         delay(800);
         if (digitalRead(0) == LOW ){
             strcat(buffer, "/button/hold");

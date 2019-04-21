@@ -15,6 +15,11 @@
 
 std::string sendMessageToServer(const char* host,
                                 int portno,
+                                std::string message,
+                                int retries);
+
+std::string sendMessageToServer(const char* host,
+                                int portno,
                                 std::string message);
 
 

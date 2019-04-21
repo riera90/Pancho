@@ -36,13 +36,13 @@ std::string Server::handleNextConnnection()
                         );
     if (this->newsockfd_ < 0 ){
         fprintf(stderr,"ERROR on accept\n");
-        exit(4);
+        return "ERROR on accept";
     }
     bzero(this->buffer_, BUFFER_LENGTH+1);
     this->n_ = read(this->newsockfd_, this->buffer_, BUFFER_LENGTH);
     if (this->n_ < 0){
         fprintf(stderr,"ERROR readding from the socket\n");
-        exit(6);
+        return "ERROR readding from the socket";
     }
     
     if (strcmp(this->buffer_, "Hello") == 0){
@@ -50,12 +50,16 @@ std::string Server::handleNextConnnection()
     }else{
         CommandHandlerResponse response;
         response = CommandHandler::handle(this->buffer_);
-        this->n_ = write(this->newsockfd_, response.ack.c_str(), response.ack.size());
+        this->n_ = write(this->newsockfd_,
+                         response.ack.c_str(),
+                         response.ack.size());
+                         
         for (int i = 0; i < response.packages.size(); i++){
             std::string ack = "";
-            for (int tries = 0; ack != ACK_OK && tries < 10; tries++){
-                ack = sendMessageToServer(inet_ntoa(this->cli_addr_.sin_addr), NODE_PORT, response.packages[i].c_str());
-            }
+            ack = sendMessageToServer(inet_ntoa(this->cli_addr_.sin_addr),
+                                      NODE_PORT,
+                                      response.packages[i].c_str(), 
+                                      CONNECTION_RETRIES);
         }
         strcat(this->buffer_, ":");
         strcat(this->buffer_, response.ack.c_str());
@@ -67,7 +71,7 @@ std::string Server::handleNextConnnection()
     
     if (this->n_ < 0){
         fprintf(stderr,"ERROR writing to the socket\n");
-        exit(7);
+        return "ERROR writing to the socket";
     }
     
     return this->buffer_;

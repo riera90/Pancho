@@ -1,31 +1,31 @@
 #include "TrainController.hpp"
 
 
-Train getNextTrain()
+Train TrainController::getNextTrain()
 {
     return Train();
 }
 
 
-Train getLastTrainBefore(time_t time)
+Train TrainController::getLastTrainBefore(time_t time)
 {
     return Train();
 }
 
 
-Train getLastTrainBefore(tm time)
+Train TrainController::getLastTrainBefore(tm time)
 {
     return Train();
 }
 
 
-Train getNextTrainFrom(time_t time)
+Train TrainController::getNextTrainFrom(time_t time)
 {
     return Train();
 }
 
 
-Train getNextTrainFrom(tm time)
+Train TrainController::getNextTrainFrom(tm time)
 {
     return Train();
     

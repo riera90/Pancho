@@ -2,6 +2,21 @@
 
 std::string sendMessageToServer(const char* host,
                                 int portno,
+                                std::string message,
+                                int retries)
+{
+    std::string response = "";
+    int i = 0;
+    do {
+        response = sendMessageToServer(host, portno, message);
+        i++;
+    } while(response != ACK_OK && i < retries);
+    return response;
+}
+
+
+std::string sendMessageToServer(const char* host,
+                                int portno,
                                 std::string message)
 {
     
@@ -12,18 +27,18 @@ std::string sendMessageToServer(const char* host,
     
     if (portno < 0 || strcmp(host, "") == 0) {
         fprintf(stderr,"ERROR invalid hostname or port\n");
-        exit(1);
+        return "ERROR invalid hostname or port";
     }
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) {
         fprintf(stderr,"ERROR could not open socket\n");
-        exit(2);
+        return "ERROR could not open socket";
     }
     
     server = gethostbyname(host);
     if (server == NULL) {
-        fprintf(stderr,"ERROR host (server) could not be found\n");
-        exit(3);
+        fprintf(stderr,"ERROR host could not be found\n");
+        return "ERROR host could not be found";
     }
     
     bzero((char*) &serv_addr, sizeof(serv_addr));
@@ -37,14 +52,14 @@ std::string sendMessageToServer(const char* host,
     
     if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
         fprintf(stderr,"ERROR connecting\n");
-        exit(4);
+        return "ERROR could not connect";
     }
     
     
     n = write(sockfd, message.c_str(), strlen(message.c_str()));
     if (n < 0) {
         fprintf(stderr,"ERROR writing to the socket\n");
-        exit(5);
+        return "ERROR writing to the socket";
     }
     
     bzero(buffer,BUFFER_LENGTH+1);
@@ -53,9 +68,8 @@ std::string sendMessageToServer(const char* host,
     
     if (n < 0) {
         fprintf(stderr,"ERROR reading from the socket\n");
-        exit(6);
+        return "ERROR reading from the socket";
     }
     close(sockfd);
     return buffer;
-    
 }

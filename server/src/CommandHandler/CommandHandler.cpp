@@ -10,13 +10,13 @@ const CommandHandlerResponse CommandHandler::handle(std::string command)
     }
     
     std::string module = utils::splitCommand(command);
+    module = module.substr(1, module.length());
     
-    
-    if (module == "/alarm"){
+    if (module == NIGHTSTAND_DISPLAY){
         return AlarmCommandHandler::handle(command);
     }
     
-    else if (module == "/speaker"){
+    else if (module == SPEAKERS){
         CommandHandlerResponse response;
         response.ack = "not yet implemented";
         return response;

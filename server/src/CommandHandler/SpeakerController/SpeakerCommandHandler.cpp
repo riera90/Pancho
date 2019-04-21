@@ -1,8 +1,7 @@
-#include "AlarmCommandHandler.hpp"
-#include <iostream>
+#include "SpeakerCommandHandler.hpp"
 
 
-const CommandHandlerResponse AlarmCommandHandler::handle(std::string command)
+const CommandHandlerResponse SpeakerCommandHandler::handle(std::string command)
 {
     if (!utils::isCommand(command)){
         CommandHandlerResponse response;
@@ -12,8 +11,8 @@ const CommandHandlerResponse AlarmCommandHandler::handle(std::string command)
     
     std::string action = utils::splitCommand(command);
     
-    if (action == "/button"){
-        return handleButton(command);
+    if (action == "/music"){
+        return handleMusic(command);
     }
     
     else {
@@ -25,9 +24,7 @@ const CommandHandlerResponse AlarmCommandHandler::handle(std::string command)
 }
 
 
-
-
-const CommandHandlerResponse AlarmCommandHandler::handleButton(std::string command)
+const CommandHandlerResponse SpeakerCommandHandler::handleMusic(std::string command)
 {
     if (!utils::isCommand(command)){
         CommandHandlerResponse response;
@@ -39,32 +36,25 @@ const CommandHandlerResponse AlarmCommandHandler::handleButton(std::string comma
     response.ack = ACK_OK;
     std::string client_response = "";
     
-    if (command == "/press"){
+    if (command == "/music/play"){
         client_response = sendMessageToServer(SPEAKERS,
                                               NODE_PORT,
-                                              "/music/stop",
+                                              "/music/play",
                                               CONNECTION_RETRIES);
         if (!utils::responseOk(client_response)){
             response.ack = client_response;
-            response.packages.push_back("there is an\nerror somewhere");
         }
-        response.packages.push_back("tren a las xx:xx\nsal a las xx:xx");
-        response.packages.push_back(WeatherController::getReport());
         return response;
     }
     
-    else if (command == "/hold"){
+    else if (command == ""){
         client_response = sendMessageToServer(SPEAKERS,
                                               NODE_PORT,
                                               "/music/stop",
                                               CONNECTION_RETRIES);
         if (!utils::responseOk(client_response)){
             response.ack = client_response;
-            response.packages.push_back("there is an\nerror somewhere");
         }
-        response.packages.push_back("alarm stopped");
-        response.packages.push_back("tren a las xx:xx\nsal a las xx:xx");
-        response.packages.push_back(WeatherController::getReport());
         return response;
     }
     
@@ -72,5 +62,4 @@ const CommandHandlerResponse AlarmCommandHandler::handleButton(std::string comma
         response.ack = "action not found";
         return response;
     }   
-    
 }

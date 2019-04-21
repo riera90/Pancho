@@ -4,10 +4,13 @@
 #include <ctime>
 #include "Train.cpp"
 
-Train getNextTrain();
-Train getLastTrainBefore(time_t time);
-Train getLastTrainBefore(tm time);
-Train getNextTrainFrom(time_t time);
-Train getNextTrainFrom(tm time);
+namespace TrainController
+{
+    Train getNextTrain();
+    Train getLastTrainBefore(time_t time);
+    Train getLastTrainBefore(tm time);
+    Train getNextTrainFrom(time_t time);
+    Train getNextTrainFrom(tm time);
+}
 
 #endif

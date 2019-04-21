@@ -7,7 +7,7 @@ target : banner ./output/bin.out
 ./output/bin.out : ./src/main.cpp  ./tmp/libproject.a
 	@echo "\tCompiling binary."
 	@mkdir -p ./output
-	@g++ ./src/main.cpp -Wpedantic -L vlc -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./output/bin.out ./tmp/libproject.a 
+	@g++ ./src/main.cpp -Wpedantic -L vlc -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/Extra -I ./src/CommandHandler/AlarmCommandHandler -I ./src/CommandHandler/SpeakerController -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./output/bin.out ./tmp/libproject.a 
 	
 	
 .PHONY : run
@@ -16,69 +16,81 @@ run : ./output/bin.out
 	@time "./output/bin.out" 
 
 
-./tmp/libproject.a : ./tmp/Entity/Train/Train.o ./tmp/Entity/Alarm/Alarm.o ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o ./tmp/CommandHandler/CommandHandler.o ./tmp/Kernel/Server/Server.o ./tmp/Kernel/Client/Client.o ./tmp/Controller/WeatherController/WeatherController.o ./tmp/Controller/TrainController/TrainController.o ./tmp/Controller/AlarmController/AlarmController.o ./tmp/Utils/CommandSplitter.o 
+./tmp/libproject.a : ./tmp/Entity/Train/Train.o ./tmp/Entity/Alarm/Alarm.o ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o ./tmp/CommandHandler/CommandHandler.o ./tmp/CommandHandler/SpeakerController/SpeakerCommandHandler.o ./tmp/Kernel/Server/Server.o ./tmp/Kernel/Client/Client.o ./tmp/Controller/WeatherController/WeatherController.o ./tmp/Controller/TrainController/TrainController.o ./tmp/Controller/AlarmController/AlarmController.o ./tmp/Utils/commandSplitter.o ./tmp/Utils/responses.o 
 	@echo "\tBuilding project library."
-	@ar -rsc ./tmp/libproject.a ./tmp/Entity/Train/Train.o ./tmp/Entity/Alarm/Alarm.o ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o ./tmp/CommandHandler/CommandHandler.o ./tmp/Kernel/Server/Server.o ./tmp/Kernel/Client/Client.o ./tmp/Controller/WeatherController/WeatherController.o ./tmp/Controller/TrainController/TrainController.o ./tmp/Controller/AlarmController/AlarmController.o ./tmp/Utils/CommandSplitter.o 
+	@ar -rsc ./tmp/libproject.a ./tmp/Entity/Train/Train.o ./tmp/Entity/Alarm/Alarm.o ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o ./tmp/CommandHandler/CommandHandler.o ./tmp/CommandHandler/SpeakerController/SpeakerCommandHandler.o ./tmp/Kernel/Server/Server.o ./tmp/Kernel/Client/Client.o ./tmp/Controller/WeatherController/WeatherController.o ./tmp/Controller/TrainController/TrainController.o ./tmp/Controller/AlarmController/AlarmController.o ./tmp/Utils/commandSplitter.o ./tmp/Utils/responses.o 
 
 
 ./tmp/Entity/Train/Train.o : ./src/Entity/Train/Train.cpp ./src/Entity/Train/Train.hpp
 	@echo "\tPrecompiling object for ./src/Entity/Train/Train.cpp."
 	@mkdir -p ./tmp/Entity/Train
-	@g++ -c ./src/Entity/Train/Train.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Entity/Train/Train.o;
+	@g++ -c ./src/Entity/Train/Train.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/Extra -I ./src/CommandHandler/AlarmCommandHandler -I ./src/CommandHandler/SpeakerController -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Entity/Train/Train.o;
 
 
 ./tmp/Entity/Alarm/Alarm.o : ./src/Entity/Alarm/Alarm.cpp ./src/Entity/Alarm/Alarm.hpp
 	@echo "\tPrecompiling object for ./src/Entity/Alarm/Alarm.cpp."
 	@mkdir -p ./tmp/Entity/Alarm
-	@g++ -c ./src/Entity/Alarm/Alarm.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Entity/Alarm/Alarm.o;
+	@g++ -c ./src/Entity/Alarm/Alarm.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/Extra -I ./src/CommandHandler/AlarmCommandHandler -I ./src/CommandHandler/SpeakerController -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Entity/Alarm/Alarm.o;
 
 
 ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o : ./src/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.cpp ./src/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.hpp
 	@echo "\tPrecompiling object for ./src/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.cpp."
 	@mkdir -p ./tmp/CommandHandler/AlarmCommandHandler
-	@g++ -c ./src/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o;
+	@g++ -c ./src/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/Extra -I ./src/CommandHandler/AlarmCommandHandler -I ./src/CommandHandler/SpeakerController -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/CommandHandler/AlarmCommandHandler/AlarmCommandHandler.o;
 
 
 ./tmp/CommandHandler/CommandHandler.o : ./src/CommandHandler/CommandHandler.cpp ./src/CommandHandler/CommandHandler.hpp
 	@echo "\tPrecompiling object for ./src/CommandHandler/CommandHandler.cpp."
 	@mkdir -p ./tmp/CommandHandler
-	@g++ -c ./src/CommandHandler/CommandHandler.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/CommandHandler/CommandHandler.o;
+	@g++ -c ./src/CommandHandler/CommandHandler.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/Extra -I ./src/CommandHandler/AlarmCommandHandler -I ./src/CommandHandler/SpeakerController -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/CommandHandler/CommandHandler.o;
+
+
+./tmp/CommandHandler/SpeakerController/SpeakerCommandHandler.o : ./src/CommandHandler/SpeakerController/SpeakerCommandHandler.cpp ./src/CommandHandler/SpeakerController/SpeakerCommandHandler.hpp
+	@echo "\tPrecompiling object for ./src/CommandHandler/SpeakerController/SpeakerCommandHandler.cpp."
+	@mkdir -p ./tmp/CommandHandler/SpeakerController
+	@g++ -c ./src/CommandHandler/SpeakerController/SpeakerCommandHandler.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/Extra -I ./src/CommandHandler/AlarmCommandHandler -I ./src/CommandHandler/SpeakerController -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/CommandHandler/SpeakerController/SpeakerCommandHandler.o;
 
 
 ./tmp/Kernel/Server/Server.o : ./src/Kernel/Server/Server.cpp ./src/Kernel/Server/Server.hpp
 	@echo "\tPrecompiling object for ./src/Kernel/Server/Server.cpp."
 	@mkdir -p ./tmp/Kernel/Server
-	@g++ -c ./src/Kernel/Server/Server.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Kernel/Server/Server.o;
+	@g++ -c ./src/Kernel/Server/Server.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/Extra -I ./src/CommandHandler/AlarmCommandHandler -I ./src/CommandHandler/SpeakerController -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Kernel/Server/Server.o;
 
 
 ./tmp/Kernel/Client/Client.o : ./src/Kernel/Client/Client.cpp ./src/Kernel/Client/Client.hpp
 	@echo "\tPrecompiling object for ./src/Kernel/Client/Client.cpp."
 	@mkdir -p ./tmp/Kernel/Client
-	@g++ -c ./src/Kernel/Client/Client.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Kernel/Client/Client.o;
+	@g++ -c ./src/Kernel/Client/Client.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/Extra -I ./src/CommandHandler/AlarmCommandHandler -I ./src/CommandHandler/SpeakerController -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Kernel/Client/Client.o;
 
 
 ./tmp/Controller/WeatherController/WeatherController.o : ./src/Controller/WeatherController/WeatherController.cpp ./src/Controller/WeatherController/WeatherController.hpp
 	@echo "\tPrecompiling object for ./src/Controller/WeatherController/WeatherController.cpp."
 	@mkdir -p ./tmp/Controller/WeatherController
-	@g++ -c ./src/Controller/WeatherController/WeatherController.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Controller/WeatherController/WeatherController.o;
+	@g++ -c ./src/Controller/WeatherController/WeatherController.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/Extra -I ./src/CommandHandler/AlarmCommandHandler -I ./src/CommandHandler/SpeakerController -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Controller/WeatherController/WeatherController.o;
 
 
 ./tmp/Controller/TrainController/TrainController.o : ./src/Controller/TrainController/TrainController.cpp ./src/Controller/TrainController/TrainController.hpp
 	@echo "\tPrecompiling object for ./src/Controller/TrainController/TrainController.cpp."
 	@mkdir -p ./tmp/Controller/TrainController
-	@g++ -c ./src/Controller/TrainController/TrainController.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Controller/TrainController/TrainController.o;
+	@g++ -c ./src/Controller/TrainController/TrainController.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/Extra -I ./src/CommandHandler/AlarmCommandHandler -I ./src/CommandHandler/SpeakerController -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Controller/TrainController/TrainController.o;
 
 
 ./tmp/Controller/AlarmController/AlarmController.o : ./src/Controller/AlarmController/AlarmController.cpp ./src/Controller/AlarmController/AlarmController.hpp
 	@echo "\tPrecompiling object for ./src/Controller/AlarmController/AlarmController.cpp."
 	@mkdir -p ./tmp/Controller/AlarmController
-	@g++ -c ./src/Controller/AlarmController/AlarmController.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Controller/AlarmController/AlarmController.o;
+	@g++ -c ./src/Controller/AlarmController/AlarmController.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/Extra -I ./src/CommandHandler/AlarmCommandHandler -I ./src/CommandHandler/SpeakerController -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Controller/AlarmController/AlarmController.o;
 
 
-./tmp/Utils/CommandSplitter.o : ./src/Utils/CommandSplitter.cpp ./src/Utils/CommandSplitter.hpp
-	@echo "\tPrecompiling object for ./src/Utils/CommandSplitter.cpp."
+./tmp/Utils/commandSplitter.o : ./src/Utils/commandSplitter.cpp ./src/Utils/commandSplitter.hpp
+	@echo "\tPrecompiling object for ./src/Utils/commandSplitter.cpp."
 	@mkdir -p ./tmp/Utils
-	@g++ -c ./src/Utils/CommandSplitter.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/AlarmCommandHandler -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Utils/CommandSplitter.o;
+	@g++ -c ./src/Utils/commandSplitter.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/Extra -I ./src/CommandHandler/AlarmCommandHandler -I ./src/CommandHandler/SpeakerController -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Utils/commandSplitter.o;
+
+
+./tmp/Utils/responses.o : ./src/Utils/responses.cpp ./src/Utils/responses.hpp
+	@echo "\tPrecompiling object for ./src/Utils/responses.cpp."
+	@mkdir -p ./tmp/Utils
+	@g++ -c ./src/Utils/responses.cpp -I ./src -I ./src/Entity -I ./src/Entity/Train -I ./src/Entity/Alarm -I ./src/CommandHandler -I ./src/CommandHandler/Extra -I ./src/CommandHandler/AlarmCommandHandler -I ./src/CommandHandler/SpeakerController -I ./src/Kernel -I ./src/Kernel/Server -I ./src/Kernel/Client -I ./src/Controller -I ./src/Controller/WeatherController -I ./src/Controller/TrainController -I ./src/Controller/AlarmController -I ./src/Utils -I ./src/shared  -o ./tmp/Utils/responses.o;
 
 
 .PHONY : googletest banner
