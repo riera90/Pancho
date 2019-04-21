@@ -1,6 +1,7 @@
-#ifndef _PANCHO_COMMAND_HANDLER_
-#define _PANCHO_COMMAND_HANDLER_
+#ifndef _PANCHO_SPEAKER_COMMAND_HANDLER_
+#define _PANCHO_SPEAKER_COMMAND_HANDLER_
 
+#include <string>
 #include "commandSplitter.hpp"
 #include "responses.hpp"
 #include "CommandHandlerResponse.hpp"

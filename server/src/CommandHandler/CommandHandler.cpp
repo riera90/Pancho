@@ -1,5 +1,5 @@
 #include "CommandHandler.hpp"
-#include <iostream>
+
 
 const CommandHandlerResponse CommandHandler::handle(std::string command)
 {
@@ -13,13 +13,11 @@ const CommandHandlerResponse CommandHandler::handle(std::string command)
     module = module.substr(1, module.length());
     
     if (module == NIGHTSTAND_DISPLAY){
-        return AlarmCommandHandler::handle(command);
+        return NightStandCommandHandler::handle(command);
     }
     
-    else if (module == SPEAKERS){
-        CommandHandlerResponse response;
-        response.ack = "not yet implemented";
-        return response;
+    else if (module == SPEAKER){
+        return SpeakerCommandHandler::handle(command);
     }
     
     else{

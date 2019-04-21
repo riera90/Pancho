@@ -7,7 +7,7 @@
 #define NODE_PORT 7708
 #define CONNECTION_RETRIES 10
 
-#define SPEAKERS "speakers"
+#define SPEAKER "speakers"
 #define NIGHTSTAND_DISPLAY "nightstand"
 
 #endif

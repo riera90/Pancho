@@ -1,8 +1,7 @@
-#include "AlarmCommandHandler.hpp"
-#include <iostream>
+#include "NightStandCommandHandler.hpp"
 
 
-const CommandHandlerResponse AlarmCommandHandler::handle(std::string command)
+const CommandHandlerResponse NightStandCommandHandler::handle(std::string command)
 {
     if (!utils::isCommand(command)){
         CommandHandlerResponse response;
@@ -27,7 +26,7 @@ const CommandHandlerResponse AlarmCommandHandler::handle(std::string command)
 
 
 
-const CommandHandlerResponse AlarmCommandHandler::handleButton(std::string command)
+const CommandHandlerResponse NightStandCommandHandler::handleButton(std::string command)
 {
     if (!utils::isCommand(command)){
         CommandHandlerResponse response;
@@ -40,7 +39,7 @@ const CommandHandlerResponse AlarmCommandHandler::handleButton(std::string comma
     std::string client_response = "";
     
     if (command == "/press"){
-        client_response = sendMessageToServer(SPEAKERS,
+        client_response = sendMessageToServer(SPEAKER,
                                               NODE_PORT,
                                               "/music/stop",
                                               CONNECTION_RETRIES);
@@ -54,7 +53,7 @@ const CommandHandlerResponse AlarmCommandHandler::handleButton(std::string comma
     }
     
     else if (command == "/hold"){
-        client_response = sendMessageToServer(SPEAKERS,
+        client_response = sendMessageToServer(SPEAKER ,
                                               NODE_PORT,
                                               "/music/stop",
                                               CONNECTION_RETRIES);

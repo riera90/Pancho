@@ -37,7 +37,7 @@ const CommandHandlerResponse SpeakerCommandHandler::handleMusic(std::string comm
     std::string client_response = "";
     
     if (command == "/music/play"){
-        client_response = sendMessageToServer(SPEAKERS,
+        client_response = sendMessageToServer(SPEAKER,
                                               NODE_PORT,
                                               "/music/play",
                                               CONNECTION_RETRIES);
@@ -48,7 +48,7 @@ const CommandHandlerResponse SpeakerCommandHandler::handleMusic(std::string comm
     }
     
     else if (command == ""){
-        client_response = sendMessageToServer(SPEAKERS,
+        client_response = sendMessageToServer(SPEAKER,
                                               NODE_PORT,
                                               "/music/stop",
                                               CONNECTION_RETRIES);

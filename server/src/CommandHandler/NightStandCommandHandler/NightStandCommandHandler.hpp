@@ -10,7 +10,7 @@
 #include "WeatherController.hpp"
 #include "responses.hpp"
 
-namespace AlarmCommandHandler
+namespace NightStandCommandHandler
 {
     const CommandHandlerResponse handle(std::string command);
     
