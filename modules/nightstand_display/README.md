@@ -23,6 +23,7 @@ An alarm snooze/stop button and a display to show the get out of home time and w
 - microcontrollers:
     + 1x ATmega328P
     + 1x ESP8266 (ESP-01) 512K/1MB
+- 1x button
 - 1x lcd display (I use the lmb162abc)
 - 1x LM1117T 3.3V regulator
 - 1x 16Mhz crystal oscillator
