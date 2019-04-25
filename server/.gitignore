@@ -2,3 +2,5 @@
 **/*.o
 **/*.a
 **/googletest
+cmake-build-debug
+build

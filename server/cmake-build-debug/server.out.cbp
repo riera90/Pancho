@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="server.out"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/mnt/data_1/code/Pancho/server/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/mnt/data_1/code/Pancho/server/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="server.out">
+				<Option output="/mnt/data_1/code/Pancho/server/cmake-build-debug/server.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/data_1/code/Pancho/server/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/mnt/data_1/code/Pancho/server/app/include"/>
+					<Add directory="/usr/include/c++/8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/8"/>
+					<Add directory="/usr/include/c++/8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 server.out"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="server.out/fast">
+				<Option output="/mnt/data_1/code/Pancho/server/cmake-build-debug/server.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/data_1/code/Pancho/server/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/mnt/data_1/code/Pancho/server/app/include"/>
+					<Add directory="/usr/include/c++/8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/8"/>
+					<Add directory="/usr/include/c++/8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 server.out/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/mnt/data_1/code/Pancho/server/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/mnt/data_1/code/Pancho/server/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/mnt/data_1/code/Pancho/server/app/src/CommandHandler/CommandHandler.cpp">
+			<Option target="server.out"/>
+		</Unit>
+		<Unit filename="/mnt/data_1/code/Pancho/server/app/src/CommandHandler/NightStandCommandHandler.cpp">
+			<Option target="server.out"/>
+		</Unit>
+		<Unit filename="/mnt/data_1/code/Pancho/server/app/src/CommandHandler/SpeakerCommandHandler.cpp">
+			<Option target="server.out"/>
+		</Unit>
+		<Unit filename="/mnt/data_1/code/Pancho/server/app/src/Controller/AlarmController.cpp">
+			<Option target="server.out"/>
+		</Unit>
+		<Unit filename="/mnt/data_1/code/Pancho/server/app/src/Controller/TrainController.cpp">
+			<Option target="server.out"/>
+		</Unit>
+		<Unit filename="/mnt/data_1/code/Pancho/server/app/src/Controller/WeatherController.cpp">
+			<Option target="server.out"/>
+		</Unit>
+		<Unit filename="/mnt/data_1/code/Pancho/server/app/src/Entity/Alarm.cpp">
+			<Option target="server.out"/>
+		</Unit>
+		<Unit filename="/mnt/data_1/code/Pancho/server/app/src/Entity/Train.cpp">
+			<Option target="server.out"/>
+		</Unit>
+		<Unit filename="/mnt/data_1/code/Pancho/server/app/src/Kernel/Client.cpp">
+			<Option target="server.out"/>
+		</Unit>
+		<Unit filename="/mnt/data_1/code/Pancho/server/app/src/Kernel/Server.cpp">
+			<Option target="server.out"/>
+		</Unit>
+		<Unit filename="/mnt/data_1/code/Pancho/server/app/src/Utils/commandSplitter.cpp">
+			<Option target="server.out"/>
+		</Unit>
+		<Unit filename="/mnt/data_1/code/Pancho/server/app/src/Utils/responses.cpp">
+			<Option target="server.out"/>
+		</Unit>
+		<Unit filename="/mnt/data_1/code/Pancho/server/app/src/main.cpp">
+			<Option target="server.out"/>
+		</Unit>
+		<Unit filename="/mnt/data_1/code/Pancho/server/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
