@@ -3,10 +3,11 @@
 
 #include <string>
 #include <vector>
+#include <pancho/shared.hpp>
 
 struct CommandHandlerResponse
 {
-    std::string ack = "";
+    std::string ack = ACK_OK;
     std::vector <std::string> packages;
 };
 

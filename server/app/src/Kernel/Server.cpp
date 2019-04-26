@@ -10,7 +10,7 @@ Server::Server (int portno = -1)
     
     sockfd_ = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd_ < 0) {
-        fprintf(stderr,"ERROR, could not open socket\n");
+        fprintf(stderr,"ERROR, can't open socket\n");
         exit(2);
     }
     
@@ -20,7 +20,7 @@ Server::Server (int portno = -1)
     this->serv_addr_.sin_port = htons(this->portno_);
     if (bind(this->sockfd_, (struct sockaddr *) &this->serv_addr_,
             sizeof(this->serv_addr_)) < 0) {
-        fprintf(stderr,"ERROR on binding\n");
+        fprintf(stderr,"ERROR can't bind on given port port\n");
         exit(3);
     }
     listen(this->sockfd_, 5);
@@ -35,14 +35,14 @@ std::string Server::handleNextConnnection()
                             &this->clilen_
                         );
     if (this->newsockfd_ < 0 ){
-        fprintf(stderr,"ERROR on accept\n");
-        return "ERROR on accept";
+        fprintf(stderr,"ERROR, can't accept\n");
+        return "ERROR, can't accept";
     }
     bzero(this->buffer_, BUFFER_LENGTH+1);
     this->n_ = read(this->newsockfd_, this->buffer_, BUFFER_LENGTH);
     if (this->n_ < 0){
-        fprintf(stderr,"ERROR readding from the socket\n");
-        return "ERROR readding from the socket";
+        fprintf(stderr,"ERROR, can't read from the socket\n");
+        return "ERROR, can't read from the socket";
     }
     
     if (strcmp(this->buffer_, "Hello") == 0){
@@ -55,7 +55,7 @@ std::string Server::handleNextConnnection()
                          response.ack.size());
                          
         for (int i = 0; i < response.packages.size(); i++){
-            std::string ack = "";
+            std::string ack;
             ack = sendMessageToServer(inet_ntoa(this->cli_addr_.sin_addr),
                                       NODE_PORT,
                                       response.packages[i].c_str(), 
@@ -70,8 +70,8 @@ std::string Server::handleNextConnnection()
     }
     
     if (this->n_ < 0){
-        fprintf(stderr,"ERROR writing to the socket\n");
-        return "ERROR writing to the socket";
+        fprintf(stderr,"ERROR, can't write to the socket\n");
+        return "ERROR, can't write to the socket";
     }
     
     return this->buffer_;

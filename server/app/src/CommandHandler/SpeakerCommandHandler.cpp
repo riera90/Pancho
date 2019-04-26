@@ -33,33 +33,26 @@ const CommandHandlerResponse SpeakerCommandHandler::handleMusic(std::string comm
     }
     
     CommandHandlerResponse response;
-    response.ack = ACK_OK;
-    std::string client_response = "";
+    std::string client_response;
     
-    if (command == "/music/play"){
-        client_response = sendMessageToServer(SPEAKER,
-                                              NODE_PORT,
-                                              "/music/play",
-                                              CONNECTION_RETRIES);
-        if (!utils::responseOk(client_response)){
-            response.ack = client_response;
-        }
+    if (command == "/play"){
+        response.ack = sendMessageToServer(SPEAKER,
+                                           NODE_PORT,
+                                           "/music/play",
+                                           CONNECTION_RETRIES);
         return response;
     }
     
-    else if (command == ""){
-        client_response = sendMessageToServer(SPEAKER,
-                                              NODE_PORT,
-                                              "/music/stop",
-                                              CONNECTION_RETRIES);
-        if (!utils::responseOk(client_response)){
-            response.ack = client_response;
-        }
+    else if (command == "/stop"){
+        response.ack = sendMessageToServer(SPEAKER,
+                                           NODE_PORT,
+                                           "/music/stop",
+                                           CONNECTION_RETRIES);
         return response;
     }
     
     else {
-        response.ack = "action not found";
+        response.ack = "ERROR, action not found";
         return response;
     }   
 }

@@ -27,18 +27,18 @@ std::string sendMessageToServer(const char* host,
     
     if (portno < 0 || strcmp(host, "") == 0) {
         fprintf(stderr,"ERROR invalid hostname or port\n");
-        return "ERROR invalid hostname or port";
+        return "ERROR, invalid hostname or port";
     }
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) {
         fprintf(stderr,"ERROR could not open socket\n");
-        return "ERROR could not open socket";
+        return "ERROR, could not open socket";
     }
     
     server = gethostbyname(host);
     if (server == NULL) {
         fprintf(stderr,"ERROR host could not be found\n");
-        return "ERROR host could not be found";
+        return "ERROR, host could not be found";
     }
     
     bzero((char*) &serv_addr, sizeof(serv_addr));
@@ -52,14 +52,14 @@ std::string sendMessageToServer(const char* host,
     
     if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
         fprintf(stderr,"ERROR connecting\n");
-        return "ERROR could not connect";
+        return "ERROR, could not connect";
     }
     
     
     n = write(sockfd, message.c_str(), strlen(message.c_str()));
     if (n < 0) {
         fprintf(stderr,"ERROR writing to the socket\n");
-        return "ERROR writing to the socket";
+        return "ERROR, writing to the socket";
     }
     
     bzero(buffer,BUFFER_LENGTH+1);
@@ -68,7 +68,7 @@ std::string sendMessageToServer(const char* host,
     
     if (n < 0) {
         fprintf(stderr,"ERROR reading from the socket\n");
-        return "ERROR reading from the socket";
+        return "ERROR, reading from the socket";
     }
     close(sockfd);
     return buffer;

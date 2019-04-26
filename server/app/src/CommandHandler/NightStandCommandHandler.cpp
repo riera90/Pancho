@@ -10,8 +10,10 @@ const CommandHandlerResponse NightStandCommandHandler::handle(std::string comman
     }
     
     std::string action = utils::splitCommand(command);
-    
-    if (action == "/button"){
+
+
+
+    if (action == "/button") {
         return handleButton(command);
     }
     
@@ -19,10 +21,9 @@ const CommandHandlerResponse NightStandCommandHandler::handle(std::string comman
         CommandHandlerResponse response;
         response.ack = "action not found";
         return response;
-    }   
+    }
     
 }
-
 
 
 
