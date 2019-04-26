@@ -1,3 +1,0 @@
-/mnt/data_1/code/Pancho/server/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/mnt/data_1/code/Pancho/server/cmake-build-debug/CMakeFiles/server.out.dir
-/mnt/data_1/code/Pancho/server/cmake-build-debug/CMakeFiles/edit_cache.dir
