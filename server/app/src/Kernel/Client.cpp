@@ -17,7 +17,7 @@ std::string sendMessageToServer(const char* host,
 
 std::string sendMessageToServer(const char* host,
                                 int portno,
-                                std::string message)
+                                std::string payload)
 {
     
     int sockfd, n;
@@ -56,7 +56,7 @@ std::string sendMessageToServer(const char* host,
     }
     
     
-    n = write(sockfd, message.c_str(), strlen(message.c_str()));
+    n = write(sockfd, payload.c_str(), strlen(payload.c_str()));
     if (n < 0) {
         fprintf(stderr,"ERROR writing to the socket\n");
         return "ERROR, writing to the socket";

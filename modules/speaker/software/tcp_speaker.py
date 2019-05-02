@@ -8,6 +8,7 @@ import socket, re, os, signal
 ################################################################################
 
 BUFFER_LENGTH = 1024
+PORT = 7708
 
 ################################################################################
 ########################### end of Configuration ###############################
@@ -70,7 +71,7 @@ class Player():
 
 
 def main():
-    server = Server(7708)
+    server = Server(PORT)
     player = Player("music.flac")
     while True:
         try:

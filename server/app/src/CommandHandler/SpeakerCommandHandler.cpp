@@ -44,7 +44,7 @@ const CommandHandlerResponse SpeakerCommandHandler::handleMusic(std::string comm
     }
     
     else if (command == "/stop"){
-        response.ack = sendMessageToServer(SPEAKER,
+        response.ack = sendMessageToServer("localhost",
                                            NODE_PORT,
                                            "/music/stop",
                                            CONNECTION_RETRIES);

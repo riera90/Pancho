@@ -3,5 +3,6 @@ services:
   server:
     build: .
     hostname: server
-    network_mode: host
+    ports:
+      - 0.0.0.0:7707:7707
     restart: always

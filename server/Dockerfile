@@ -1,7 +1,7 @@
 FROM gcc:8.2
+RUN apt update -y
+RUN apt upgrade -y
+RUN apt install -y cmake
 ADD . /app
-WORKDIR /app
-RUN make clean
-RUN make config
-RUN make
-CMD ./output/bin.out
+WORKDIR /app/build
+CMD cmake .. && /app/build/panchoServer.out

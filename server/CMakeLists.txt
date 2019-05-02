@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 2.8.11)
 
-project (server.out)
+include(GoogleTest)
+
+project (panchoServer)
 
 set(SOURCES
     app/src/Controller/AlarmController.cpp
@@ -23,9 +25,10 @@ set(SOURCES
     app/src/main.cpp
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME}.out ${SOURCES})
 
-target_include_directories(${PROJECT_NAME}
+target_include_directories(${PROJECT_NAME}.out
     PRIVATE
     ${PROJECT_SOURCE_DIR}/app/include
 )
+
