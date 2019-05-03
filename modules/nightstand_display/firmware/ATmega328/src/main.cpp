@@ -6,7 +6,7 @@
 int size;
 bool scroll;
 char buffer[64];
-LiquidCrystal lcd(2, 3, 4, 5, 6, 7);
+LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 
 void setup() {
     Serial.begin(BAUD_RATE);

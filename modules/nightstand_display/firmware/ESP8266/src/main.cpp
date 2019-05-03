@@ -3,11 +3,11 @@
 #include <ESP8266WiFi.h>
 
 
-#define STASSID "Casa-I"
-#define STAPSK  "vamosaconectar"
+#define STASSID "ssid"
+#define STAPSK  "passwd"
 #define HOSTNAME "nightstand ESP"
 #define NODE_NAME "nightstand"
-#define SERVER "192.168.10.112"
+#define SERVER "192.168.10.113"
 #define SERVER_PORT 7707
 #define PORT 7708
 #define BAUD_RATE 9600
@@ -153,7 +153,7 @@ void button_press_pooling()
         
         for (int i = 0; send_message_to_server(buffer) != "OK"; i++){
             if (i < 10){
-                display_on_lcd("Internal server\nerror\0");
+                display_on_lcd("can't connect to\nspeakers\0");
                 return;
             }
         }

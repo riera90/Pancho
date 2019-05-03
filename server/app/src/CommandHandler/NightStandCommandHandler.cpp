@@ -56,7 +56,7 @@ const CommandHandlerResponse NightStandCommandHandler::handleButton(std::string 
     else if (command == "/hold"){
         client_response = sendMessageToServer(SPEAKER ,
                                               NODE_PORT,
-                                              "/music/stop",
+                                              "/music/play/music.flac",
                                               CONNECTION_RETRIES);
         if (!utils::responseOk(client_response)){
             response.ack = client_response;
