@@ -14,3 +14,4 @@ Alarm AlarmController::getNextAlarm(time_t time)
 {
     //return * new Alarm();
 }
+

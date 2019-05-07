@@ -60,11 +60,11 @@ const CommandHandlerResponse NightStandCommandHandler::handleButton(std::string 
                                               CONNECTION_RETRIES);
         if (!utils::responseOk(client_response)){
             response.ack = client_response;
-            response.packages.push_back("there is an\nerror somewhere");
+            response.packages.emplace_back("there is an\nerror somewhere");
         }
-        response.packages.push_back("alarm stopped");
-        response.packages.push_back("tren a las xx:xx\nsal a las xx:xx");
-        response.packages.push_back(WeatherController::getReport());
+        response.packages.emplace_back("alarm stopped");
+        response.packages.emplace_back("tren a las xx:xx\nsal a las xx:xx");
+        response.packages.emplace_back(WeatherController::getReport());
         return response;
     }
     

@@ -3,11 +3,11 @@
 #include <ESP8266WiFi.h>
 
 
-#define STASSID "ssid"
-#define STAPSK  "passwd"
+#define STASSID "2 pi 1 net"
+#define STAPSK  "d|Ewl+k5>~rucFipo~&lj!.v+pcq\"7"
 #define HOSTNAME "nightstand ESP"
 #define NODE_NAME "nightstand"
-#define SERVER "192.168.10.113"
+#define SERVER "192.168.100.149"
 #define SERVER_PORT 7707
 #define PORT 7708
 #define BAUD_RATE 9600

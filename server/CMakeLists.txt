@@ -6,7 +6,7 @@ project (panchoServer)
 
 set(SOURCES
     app/src/Controller/AlarmController.cpp
-    app/src/Controller/TrainController.cpp
+    app/src/Controller/TrainController.cppi
     app/src/Controller/WeatherController.cpp
 
     app/src/CommandHandler/CommandHandler.cpp
@@ -21,6 +21,8 @@ set(SOURCES
 
     app/src/Utils/commandSplitter.cpp
     app/src/Utils/responses.cpp
+
+        app/src/Wrapper/XMLParser.cpp
 
     app/src/main.cpp
 )
