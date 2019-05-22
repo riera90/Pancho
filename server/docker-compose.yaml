@@ -1,8 +1,10 @@
 version: "3"
 services:
   mqtt_broker:
-    build: .
+    image: eclipse-mosquitto:latest
     hostname: mqtt_broker
+    volumes:
+        - ./mqtt.conf:/mosquitto/config/mosquitto.conf
     ports:
       - 0.0.0.0:7707:7707
     restart: always

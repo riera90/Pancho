@@ -1,11 +1,13 @@
+#define MQTT_VERSION 4
+
 #include <Arduino.h>
 #include <string.h>
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
 
-#define STASSID "2 pi 1 net"
-#define STAPSK  "d|Ewl+k5>~rucFipo~&lj!.v+pcq\"7"
+#define STASSID "ssid"
+#define STAPSK  "passwdord"
 #define HOSTNAME "nightstand ESP"
 #define NODE_NAME "nightstand"
 #define MQTT_BROKER "192.168.100.100"
@@ -15,15 +17,15 @@
 
 #define MQTT_USERNAME "admin"
 #define MQTT_PASSWORD "admin"
-#define MQTT_TOPIC "/test"
-#define MQTT_QOS 1
+#define MQTT_TOPIC_SUB "/nightstand/lcd"
+#define MQTT_TOPIC_PUB "/nightstand/button"
+#define MQTT_QOS 0
 
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
 String buffer;
 int status = WL_IDLE_STATUS;
 int counter = 0;
-
 
 /**
  * wakes up the ATMega and lcd display
@@ -66,12 +68,37 @@ void reset()
  */
 void sleep_atmega()
 {
-    display_on_lcd("going to sleep\0");
+    display_on_lcd("going to sleep");
     delay(2000);
     digitalWrite(2, LOW);
 }
 
 
+void button_press_pooling()
+{
+    if ( digitalRead(0) == LOW ){
+        delay(800);
+        if (digitalRead(0) == LOW ){ // hold
+            mqttClient.publish(MQTT_TOPIC_PUB,"hold");
+        } else { // press
+            mqttClient.publish(MQTT_TOPIC_PUB,"press");
+        }
+        // wait until the button is release
+        // if the button is hold for too long, the board will reset itself
+        // this is not a bug.
+        // if you want to disable this put a sleep(10) inside the while
+        while (digitalRead(0) == LOW);
+    }
+}
+
+void mqtt_callback(char* topic, byte* payload, unsigned int length) {
+    String buffer = "";
+    for (size_t i = 0; i < length; i++) {
+        buffer += (char)payload[i];
+    }
+    
+    display_on_lcd(buffer);
+}
 
 
 void setup() {
@@ -103,19 +130,30 @@ void setup() {
     display_on_lcd(buffer);
     
     // connect to the mqtt broker
-    mqttClient.connect(HOSTNAME, MQTT_USERNAME, MQTT_PASSWORD);
-    mqttClient.subscribe (MQTT_TOPIC, MQTT_QOS);
-    mqttClient.setServer(MQTT_BROKER,MQTT_BROKER_PORT);
-    for (int i = 0; mqttClient.connected() != 0; i++) {
-        if (i > 1000) { // 10000 ns if after 10 seconds if it si not connected
+    mqttClient.setServer(MQTT_BROKER, MQTT_BROKER_PORT);
+    
+    
+    
+    for (int i = 0; !mqttClient.connect(HOSTNAME); i++) {
+        if (i > 1000) { // 10000 ns if after 10 seconds if it is not connected
             buffer = String("couldn't connect\nto MQTT broker");    
             display_on_lcd(buffer);
             reset();
         }
         delay(10);
     }
-    
     display_on_lcd("Connected to\nMQTT broker");
+    
+    
+    for (int i = 0; !mqttClient.subscribe(MQTT_TOPIC_SUB, MQTT_QOS); i++) {
+        if (i > 1000) { // 10000 ns if after 10 seconds if it is not subscribed
+            buffer = String("couldn't subscribe\nto the topic");    
+            display_on_lcd(buffer);
+            reset();
+        }
+        delay(10);
+    }
+    mqttClient.setCallback(mqtt_callback);
     
     display_on_lcd("All Systems Go");
     
@@ -124,8 +162,25 @@ void setup() {
 
 void loop()
 {
-    // sleep algorithm
+    // polling for button press
+    button_press_pooling();
     
+    // pooling for incomming messages at MQTT_TOPIC_SUB
+    mqttClient.loop();
+    
+    if (!mqttClient.connected()) { // reconnect if not connected
+        // wait untill connection
+        for (int i = 0; !mqttClient.connect(HOSTNAME); i++) {
+            if (i > 1000) { // 10000 ns if after 10 seconds if it is not connected
+                buffer = String("couldn't connect\nto MQTT broker");    
+                display_on_lcd(buffer);
+                reset();
+            }
+            delay(10);
+        }
+    }
+    
+    // sleep algorithm
     // each 3 ns increment the counter if the system is fully awake
     delay(3);
     // if the ATMega is sending information, it is doing things so don't send it to sleep
@@ -145,8 +200,4 @@ void loop()
             }
         }
     }
-    
-    // do the cool stuff
-    mqttClient.publish("/test","hi from esp!");
-    
 }
