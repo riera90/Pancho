@@ -7,7 +7,7 @@
 
 
 #define STASSID "ssid"
-#define STAPSK  "passwdord"
+#define STAPSK  "password"
 #define HOSTNAME "nightstand ESP"
 #define NODE_NAME "nightstand"
 #define MQTT_BROKER "192.168.100.100"

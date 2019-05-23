@@ -1,1 +1,2 @@
 pygame==1.9.5
+paho-mqtt==1.4.0
