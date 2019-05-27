@@ -11,10 +11,10 @@ An alarm snooze/stop button and a display to show the get out of home time and w
 
 ### Components
 - resistors:
-    + 1x 220Ω
+    + 2x 220Ω
     + 2x 510Ω
-    + 4x 1kΩ
-    + 1x 10kΩ
+    + 3x 1kΩ
+    + 2x 10kΩ
 - capacitors:
     + 2x 22pf ceramic capacitor
 - transistors:
