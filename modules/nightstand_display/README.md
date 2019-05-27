@@ -51,4 +51,8 @@ comming soon
 ## Diagram
 ![](diagram.png)
 
+## Wiring
+![front while on](extra/front_on.jpg)
+![naked front](extra/front.jpg)
+![back side](extra/back.jpg)
 
