@@ -18,4 +18,4 @@ A PC is almost always required, so sometimes is omitted.
 If there is some electronics involved, a schematics diagram will be provided.
 
 ***A video about the project***  
-On how to build the module and a step by step explanation of each part of the module
+Abowt how to build the module and a step by step explanation of each part of the module
