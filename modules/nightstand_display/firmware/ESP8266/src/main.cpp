@@ -134,7 +134,7 @@ void setup() {
     
     
     
-    for (int i = 0; !mqttClient.connect(HOSTNAME); i++) {
+    for (int i = 0; !mqttClient.connect(HOSTNAME, MQTT_USERNAME, MQTT_PASSWORD); i++) {
         if (i > 1000) { // 10000 ns if after 10 seconds if it is not connected
             buffer = String("couldn't connect\nto MQTT broker");    
             display_on_lcd(buffer);
@@ -170,7 +170,7 @@ void loop()
     
     if (!mqttClient.connected()) { // reconnect if not connected
         // wait untill connection
-        for (int i = 0; !mqttClient.connect(HOSTNAME); i++) {
+        for (int i = 0; !mqttClient.connect(HOSTNAME, MQTT_USERNAME, MQTT_PASSWORD); i++) {
             if (i > 1000) { // 10000 ns if after 10 seconds if it is not connected
                 buffer = String("couldn't connect\nto MQTT broker");    
                 display_on_lcd(buffer);
@@ -184,9 +184,10 @@ void loop()
     // each 3 ns increment the counter if the system is fully awake
     delay(3);
     // if the ATMega is sending information, it is doing things so don't send it to sleep
-    if (Serial.available() > 0) {
+    if (Serial.available() > 5) {
         // clear the buffer, sets the counter co zero and continue pooling.
-        Serial.read();
+        while (Serial.available())
+            Serial.read();
         counter = 0;
     }
     else{

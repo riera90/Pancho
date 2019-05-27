@@ -9,6 +9,6 @@ services:
         PULSE_SERVER : pulseaudio
     volumes:
         - /tmp/.X11-unix:/tmp/.X11-unix
-        - /dev/snd:/dev/snd
+    #     - /dev/snd:/dev/snd
     devices:
-        - "/dev/snd:/dev/snd"
+        - /dev/snd

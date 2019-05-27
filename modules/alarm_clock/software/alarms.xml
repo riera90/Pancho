@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<alarms>
+    <alarm>
+        <name>Monday alarm</name>
+        <day>1</day>
+        <time>00:16:20</time>
+        <message>hello world\nfrom xml</message>
+    </alarm>
+</alarms>
+
