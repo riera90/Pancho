@@ -1,8 +1,9 @@
 # Nightstand display and alarm stopper
 
 **Difficulty: medium-high**  
-**Economic cost: low (15-20€)**
-
+**Economic cost: low (15-20€)**  
+**Dependencies:** None  
+**Integration** None
 
 ## Description
 An alarm snooze/stop button and a display to show the get out of home time and whatever information you want, like weather, and traffic
@@ -43,16 +44,13 @@ An alarm snooze/stop button and a display to show the get out of home time and w
 - an arduino uno
 - a pc
 
-# How to do it!
-
-## [Watch my video!]()
-comming soon
-
 ## Diagram
 ![](diagram.png)
 
 ## Wiring
 ![front while on](extra/front_on.jpg)
+
 ![naked front](extra/front.jpg)
+
 ![back side](extra/back.jpg)
 
