@@ -1,14 +1,15 @@
-# Customizable alarm clock
+# MQTT controlled led strip
 
-**Difficulty: Medium**  
-**Economic cost: Nothing**  
+**Difficulty: Easy**  
+**Economic cost: Medium (20-25€)**  
 **Dependencies:**
 - Nightstand Display
 - Speakers
 
 **Integration** None
+
 ## Description
-An alarm snooze/stop button and a display to show the get out of home time and whatever information you want, like weather, and traffic
+Just a led strip that can be controlled via MQTT
 
 ## You will need
 
