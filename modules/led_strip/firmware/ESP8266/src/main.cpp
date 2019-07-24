@@ -7,7 +7,7 @@
 
 
 #define STASSID "ssid"
-#define STAPSK  "passwd""
+#define STAPSK  "passwd"
 #define HOSTNAME "led_strip_esp"
 #define NODE_NAME "led_strip"
 #define MQTT_BROKER "192.168.100.100"
@@ -94,7 +94,6 @@ void setup()
     pinMode(RED, OUTPUT);
     pinMode(GREEN, OUTPUT);
     pinMode(BLUE, OUTPUT);
-    pinMode(BLINK, OUTPUT);
     clean_leds();
     
     Serial.begin(BAUD_RATE);
@@ -144,7 +143,7 @@ void setup()
 
 
 void loop()
-{ 
+{
     // pooling for incomming messages at MQTT_TOPIC_SUB
     mqttClient.loop();
     

@@ -3,8 +3,6 @@ services:
   mqtt_broker:
     build: .
     hostname: mqtt_broker
-    volumes:
-        - ./log:/mosquitto/log
     ports:
       - 0.0.0.0:7707:7707
     restart: always
