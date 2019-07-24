@@ -4,7 +4,7 @@ COPY ./mosquitto.conf /mosquitto/config/mosquitto.conf
 
 COPY ./passwd /mosquitto/passwd
 
-RUN mosquitto_passwd -U /mosquitto/config/mosquitto.conf
+RUN mosquitto_passwd -U /mosquitto/passwd
 
 VOLUME "/mosquitto/log"
 

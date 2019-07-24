@@ -10,7 +10,7 @@
 #define STAPSK  "passwd"
 #define HOSTNAME "led_strip_esp"
 #define NODE_NAME "led_strip"
-#define MQTT_BROKER "192.168.100.100"
+#define MQTT_BROKER "ip"
 #define MQTT_BROKER_PORT 7707
 #define BAUD_RATE 9600
 #define BUFFER_LENGTH 255
