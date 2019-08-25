@@ -2,9 +2,27 @@
 
 <alarms>
     <alarm>
-        <name>Monday alarm</name>
-        <day>1</day>
-        <time>00:16:20</time>
+        <name>monday alarm</name>
+        <day>0</day>
+        <time>01:10:00</time>
+        <message>hello world\nfrom xml</message>
+    </alarm>
+    <alarm>
+        <name>Test alarm</name>
+        <day>2</day>
+        <time>02:20:00</time>
+        <message>hello world\nfrom xml</message>
+    </alarm>
+    <alarm>
+        <name>Test alarm</name>
+        <day>6</day>
+        <time>20:42:20</time>
+        <message>hello world\nfrom xml</message>
+    </alarm>
+    <alarm>
+        <name>Test alarm</name>
+        <day>6</day>
+        <time>23:40:00</time>
         <message>hello world\nfrom xml</message>
     </alarm>
 </alarms>
