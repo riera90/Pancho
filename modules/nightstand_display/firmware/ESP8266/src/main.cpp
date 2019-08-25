@@ -8,18 +8,17 @@
 
 #define STASSID "ssid"
 #define STAPSK  "password"
-#define HOSTNAME "nightstand ESP"
-#define NODE_NAME "nightstand"
-#define MQTT_BROKER "192.168.100.100"
+#define HOSTNAME "Nightstand display"
+#define MQTT_BROKER "localhost"
 #define MQTT_BROKER_PORT 7707
+#define MQTT_USERNAME "admin"
+#define MQTT_PASSWORD "admin"
+#define MQTT_TOPIC_LCD "/bedroom/nightstand/lcd"
+#define MQTT_TOPIC_BUTTON "/bedroom/nightstand/button"
+#define MQTT_QOS 0
 #define BAUD_RATE 9600
 #define BUFFER_LENGTH 255
 
-#define MQTT_USERNAME "admin"
-#define MQTT_PASSWORD "admin"
-#define MQTT_TOPIC_SUB "/nightstand/lcd"
-#define MQTT_TOPIC_PUB "/nightstand/button"
-#define MQTT_QOS 0
 
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
@@ -79,9 +78,9 @@ void button_press_pooling()
     if ( digitalRead(0) == LOW ){
         delay(800);
         if (digitalRead(0) == LOW ){ // hold
-            mqttClient.publish(MQTT_TOPIC_PUB,"hold");
+            mqttClient.publish(MQTT_TOPIC_BUTTON,"hold");
         } else { // press
-            mqttClient.publish(MQTT_TOPIC_PUB,"press");
+            mqttClient.publish(MQTT_TOPIC_BUTTON,"press");
         }
         // wait until the button is release
         // if the button is hold for too long, the board will reset itself
@@ -145,7 +144,7 @@ void setup() {
     display_on_lcd("Connected to\nMQTT broker");
     
     
-    for (int i = 0; !mqttClient.subscribe(MQTT_TOPIC_SUB, MQTT_QOS); i++) {
+    for (int i = 0; !mqttClient.subscribe(MQTT_TOPIC_LCD, MQTT_QOS); i++) {
         if (i > 1000) { // 10000 ns if after 10 seconds if it is not subscribed
             buffer = String("couldn't subscribe\nto the topic");    
             display_on_lcd(buffer);
@@ -165,7 +164,7 @@ void loop()
     // polling for button press
     button_press_pooling();
     
-    // pooling for incomming messages at MQTT_TOPIC_SUB
+    // pooling for incomming messages at MQTT_TOPIC_LCD
     mqttClient.loop();
     
     if (!mqttClient.connected()) { // reconnect if not connected

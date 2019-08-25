@@ -1,31 +1,9 @@
 #!/usr/bin/python3
-'''
-This file is part of the Pancho, A Non Conventional House Online project
-www.github.com/riera90/Pancho
-
-Licenced under BSD 3
-
-Authors:
-    Diego Rodríguez Riera (riera90)
-
-
-This script is the alarm module of Pancho
-It Load the alarms from a XML file and sends commands to the speakers module while accepting commands from the
-nightstand module for snoozing and stopping the alarm.
-
-
-Requirements (modules)
-    MQTT Broker
-    Speakers
-    Nightstand display
-'''
 
 import time
 from datetime import datetime, timedelta
 import xml.etree.ElementTree as ET
 import paho.mqtt.client as mqtt
-
-from pprint import pprint
 
 ################################################################################
 # Configuration
@@ -35,13 +13,13 @@ ALARMS_XML = "alarms.xml"
 SNOOZE_TIME = timedelta(seconds=5)
 REPEAT_NUMBER = 3
 ALARM_MUSIC = "music.flac"
-HOSTNAME = "alarm"
+HOSTNAME = "Alarm clock"
 MQTT_BROKER = "localhost"
 MQTT_BROKER_PORT = 7707
 MQTT_USERNAME = "admin"
 MQTT_PASSWORD = "admin"
-MQTT_TOPIC_NIGHTSTAND_BUTTON = "/nightstand/button"
-MQTT_TOPIC_SPEAKERS = "/speakers"
+MQTT_TOPIC_NIGHTSTAND_BUTTON = "/bedroom/nightstand/button"
+MQTT_TOPIC_SPEAKERS = "/bedroom/speakers"
 MQTT_QOS = 0
 
 ################################################################################

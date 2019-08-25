@@ -8,12 +8,12 @@ import paho.mqtt.client as mqtt
 ############################### Configuration ##################################
 ################################################################################
 
-HOSTNAME = "speakers"
+HOSTNAME = "Speakers"
 MQTT_BROKER = "localhost"
 MQTT_BROKER_PORT = 7707
 MQTT_USERNAME = "admin"
 MQTT_PASSWORD = "admin"
-MQTT_TOPIC_SUB = "/speakers"
+MQTT_TOPIC = "/bedroom/speakers"
 MQTT_QOS = 0
 
 ################################################################################
@@ -66,7 +66,7 @@ player = Player("music.flac")
 mqtt_client = mqtt.Client(HOSTNAME)
 mqtt_client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
 mqtt_client.connect(MQTT_BROKER, MQTT_BROKER_PORT)
-mqtt_client.subscribe(MQTT_TOPIC_SUB, MQTT_QOS)
+mqtt_client.subscribe(MQTT_TOPIC, MQTT_QOS)
 
 # Define event callbacks
 def on_connect(client, userdata, flags, rc):
