@@ -35,7 +35,6 @@ ALARMS_XML = "alarms.xml"
 SNOOZE_TIME = timedelta(seconds=5)
 REPEAT_NUMBER = 3
 ALARM_MUSIC = "music.flac"
-
 HOSTNAME = "alarm"
 MQTT_BROKER = "localhost"
 MQTT_BROKER_PORT = 7707
@@ -215,6 +214,7 @@ def alarm_pooling():
 def main():
     while True:
         try:
+            mqtt_client.loop()
             alarm_pooling()
             time.sleep(1)
         except Exception as e:
