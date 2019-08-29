@@ -20,18 +20,11 @@ void setup() {
 // the loop function runs over and over again forever
 void loop() {
     // read from the serail input
-    if (scroll) {
-        lcd.scrollDisplayLeft();
-    }
-    delay(500);
-    
-    
-    
     size = Serial.parseInt();
     // if a package has been read, print the content in the lcd
     if (size > 0)
     {
-        Serial.print('.');
+        Serial.print("working");
         
         // clears the lcd display
         lcd.clear();
@@ -56,7 +49,17 @@ void loop() {
                 lcd.print(buffer[i]);
             }
         }
-        // delay 10 seconds between texts
-        delay(5000);
+    
+        // delay 5 seconds between texts ,activating scroll if there is
+        for (size_t i = 0; i < 10; i++) {
+            if (i == 0){
+                delay(1000);
+                i += 2;
+            }
+            if (scroll) {
+                lcd.scrollDisplayLeft();
+            }
+            delay(500);
+        }
     }
 }

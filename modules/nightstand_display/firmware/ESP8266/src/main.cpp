@@ -18,6 +18,7 @@
 #define MQTT_QOS 0
 #define BAUD_RATE 9600
 #define BUFFER_LENGTH 255
+#define TIME_PER_MESSAGE 5 // in secconds
 
 
 WiFiClient wifiClient;
@@ -25,6 +26,7 @@ PubSubClient mqttClient(wifiClient);
 String buffer;
 int status = WL_IDLE_STATUS;
 int counter = 0;
+bool displaying = false;
 
 /**
  * wakes up the ATMega and lcd display
@@ -33,7 +35,6 @@ void wake_up_atmega()
 {
     counter = 0;
     digitalWrite(2, HIGH);
-    delay(1000);
 }
 
 
@@ -48,6 +49,8 @@ void display_on_lcd(String payload)
     for (unsigned int i = 0; i < payload.length(); i++) {
         Serial.print(payload[i]);
     }
+    displaying = true;
+    counter += TIME_PER_MESSAGE * 667; // adjusting for the 3 ns delay in loop 
 }
 
 
@@ -70,6 +73,7 @@ void sleep_atmega()
     display_on_lcd("going to sleep");
     delay(2000);
     digitalWrite(2, LOW);
+    displaying = false;
 }
 
 
@@ -180,24 +184,16 @@ void loop()
     }
     
     // sleep algorithm
-    // each 3 ns increment the counter if the system is fully awake
-    delay(3);
-    // if the ATMega is sending information, it is doing things so don't send it to sleep
-    if (Serial.available() > 5) {
-        // clear the buffer, sets the counter co zero and continue pooling.
-        while (Serial.available())
-            Serial.read();
-        counter = 0;
-    }
-    else{
-        // if it is not sending, it is doing nothing, suspend at 30 secconds (30000ns)
-        if (counter < 10000) {
-            counter++;
-        }else{
-            if (counter == 10000) {
-                sleep_atmega();
-                counter++;
-            }
+    // checks if the atmega is doing work
+    if (displaying) {
+        // if it is, and the counter is zero, the work is done
+        if (counter <= 0) {
+            sleep_atmega();
+        }
+        else {
+            counter --;
         }
     }
+    // each 3 ns increment the counter if the system is fully awake
+    delay(3);
 }
