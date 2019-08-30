@@ -15,6 +15,7 @@
 #define MQTT_PASSWORD "admin"
 #define MQTT_TOPIC_LCD "/bedroom/nightstand/lcd"
 #define MQTT_TOPIC_BUTTON "/bedroom/nightstand/button"
+#define MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION "/bedroom/software_station/led_strip"
 #define MQTT_QOS 0
 #define BAUD_RATE 9600
 #define BUFFER_LENGTH 255
@@ -80,6 +81,7 @@ void sleep_atmega()
 void button_press_pooling()
 {
     if ( digitalRead(0) == LOW ){
+        mqttClient.publish(MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION,"1024,100,50");
         delay(800);
         if (digitalRead(0) == LOW ){ // hold
             mqttClient.publish(MQTT_TOPIC_BUTTON,"hold");
@@ -90,7 +92,11 @@ void button_press_pooling()
         // if the button is hold for too long, the board will reset itself
         // this is not a bug.
         // if you want to disable this put a sleep(10) inside the while
-        while (digitalRead(0) == LOW);
+        while (digitalRead(0) == LOW){
+            delay(10);
+        };
+        delay(5000);
+        mqttClient.publish(MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION,"0,0,0");        
     }
 }
 

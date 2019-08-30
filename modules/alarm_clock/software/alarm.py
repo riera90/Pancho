@@ -8,9 +8,8 @@ import paho.mqtt.client as mqtt
 ################################################################################
 # Configuration
 ################################################################################
-
 ALARMS_XML = "alarms.xml"
-SNOOZE_TIME = timedelta(seconds=5)
+SNOOZE_TIME = timedelta(minutes=5)
 REPEAT_NUMBER = 3
 ALARM_MUSIC = "music.flac"
 HOSTNAME = "Alarm clock"
@@ -20,6 +19,7 @@ MQTT_USERNAME = "admin"
 MQTT_PASSWORD = "admin"
 MQTT_TOPIC_NIGHTSTAND_BUTTON = "/bedroom/nightstand/button"
 MQTT_TOPIC_SPEAKERS = "/bedroom/speakers"
+MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION = "/bedroom/software_station/led_strip"
 MQTT_QOS = 0
 
 ################################################################################
@@ -46,7 +46,7 @@ def stop_alarm():
     repeat_counter = 0
     next_alarm = None
     mqtt_client.publish(MQTT_TOPIC_SPEAKERS, 'stop', MQTT_QOS)
-
+    # the lights will be turned off by the nightstand  when the button is pressed
 
 def snooze_alarm():
     '''
@@ -166,6 +166,10 @@ def ring_alarm():
 
     next_alarm = next_alarm + SNOOZE_TIME
     print("new snooze set to:", next_alarm)
+
+    # turns on the lights
+    mqtt_client.publish(MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION, "1024,1024,1024", MQTT_QOS)
+
     return
 
 def alarm_pooling():
