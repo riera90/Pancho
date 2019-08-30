@@ -8,6 +8,7 @@ import paho.mqtt.client as mqtt
 ################################################################################
 # Configuration
 ################################################################################
+
 ALARMS_XML = "alarms.xml"
 SNOOZE_TIME = timedelta(minutes=5)
 REPEAT_NUMBER = 3
@@ -28,6 +29,8 @@ MQTT_QOS = 0
 
 next_alarm = None
 repeat_counter = 0
+ringing = False
+active_alarm = False
 
 # sets up the MQTT client
 mqtt_client = mqtt.Client(HOSTNAME)
@@ -42,18 +45,28 @@ def stop_alarm():
     '''
     global repeat_counter
     global next_alarm
-    print("stopping the alarm")
-    repeat_counter = 0
-    next_alarm = None
-    mqtt_client.publish(MQTT_TOPIC_SPEAKERS, 'stop', MQTT_QOS)
-    # the lights will be turned off by the nightstand  when the button is pressed
+    global ringing
+    global active_alarm
+    
+    if active_alarm is True:
+        print("stopping the alarm")
+        repeat_counter = 0
+        next_alarm = None
+        mqtt_client.publish(MQTT_TOPIC_SPEAKERS, 'stop', MQTT_QOS)
+        active_alarm = False
+        ringing = False
+        # the lights will be turned off by the nightstand  when the button is pressed
 
 def snooze_alarm():
     '''
     snoozes the alarm, sending a stop signal to the speakers and letting the snooze functionality do its job
     '''
-    print("snoozing the alarm")
-    mqtt_client.publish(MQTT_TOPIC_SPEAKERS, 'stop', MQTT_QOS)
+    global ringing
+    
+    if ringing is True:
+        print("snoozing the alarm")
+        mqtt_client.publish(MQTT_TOPIC_SPEAKERS, 'stop', MQTT_QOS)
+        ringing = False
 
 
 # Define event callbacks
@@ -152,7 +165,11 @@ def ring_alarm():
     '''
     global repeat_counter
     global next_alarm
-
+    global ringing
+    global active_alarm
+    
+    ringing = True
+    active_alarm = True
     repeat_counter += 1
     print("ringing alarm:", next_alarm)
     print("repaet no", repeat_counter)
