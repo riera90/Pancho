@@ -15,3 +15,5 @@ MQTT_TOPIC_NIGHTSTAND_BUTTON = "/bedroom/nightstand/button"
 MQTT_TOPIC_SPEAKERS = "/bedroom/speakers"
 MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION = "/bedroom/software_station/led_strip"
 MQTT_QOS = 0
+AEMET_API_KEY=""
+AEMET_MUNICIPE_CODE=""
