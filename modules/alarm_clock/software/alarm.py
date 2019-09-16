@@ -87,7 +87,7 @@ def snooze_alarm():
         mqtt_client.publish(config.MQTT_TOPIC_SPEAKERS, 'stop', config.MQTT_QOS)
         ringing = False
     mqtt_client.publish(config.MQTT_TOPIC_NIGHTSTAND_LCD, next_alarm.getMessage(), config.MQTT_QOS)
-    mqtt_client.publish(config.MQTT_TOPIC_NIGHTSTAND_LCD, get_meteo_report(), config.MQTT_QOS)
+    # mqtt_client.publish(config.MQTT_TOPIC_NIGHTSTAND_LCD, get_meteo_report(), config.MQTT_QOS)
 
 
 # Define event callbacks
