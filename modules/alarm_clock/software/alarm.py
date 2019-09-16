@@ -43,16 +43,16 @@ def get_meteo_report():
     aemet_url = response.json()["datos"]
     response = requests.get(aemet_url)
     response = response.json()
-    wheather = response[0]['prediccion']['dia'][0]['estadoCielo'][0]['descripcion']
-    if wheather is "":
-        wheather = "soleado"
+    weather = response[0]['prediccion']['dia'][0]['estadoCielo'][0]['descripcion']
+    if weather is "":
+        weather = "soleado"
 
     rain = str(response[0]['prediccion']['dia'][0]['probPrecipitacion'][0]['value'])
 
     temp_min = str(response[0]['prediccion']['dia'][0]['temperatura']['minima'])
     temp_max = str(response[0]['prediccion']['dia'][0]['temperatura']['maxima'])
 
-    return wheather+", "+rain+"%\ntemp: "+temp_min+"/"+temp_max+" C"
+    return weather+", "+rain+"%\ntemp: "+temp_min+"/"+temp_max+" C"
 
 
 def stop_alarm():
