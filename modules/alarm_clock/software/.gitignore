@@ -1,3 +1,4 @@
 /.env
 /config.py
+/alarms.xml
 /__pycache__
