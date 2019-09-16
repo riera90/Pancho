@@ -21,8 +21,8 @@
     </alarm>
     <alarm>
         <name>Test alarm</name>
-        <day>6</day>
-        <time>23:40:00</time>
+        <day>0</day>
+        <time>13:58:00</time>
         <message>hello world\nfrom xml</message>
     </alarm>
 </alarms>

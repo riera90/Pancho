@@ -6,9 +6,6 @@ import xml.etree.ElementTree as ET
 import paho.mqtt.client as mqtt
 import config
 
-################################################################################
-# Beginning of script
-################################################################################
 
 next_alarm = None
 repeat_counter = 0
@@ -22,6 +19,22 @@ mqtt_client.connect(config.MQTT_BROKER, config.MQTT_BROKER_PORT)
 mqtt_client.subscribe(config.MQTT_TOPIC_NIGHTSTAND_BUTTON, config.MQTT_QOS)
 
 
+class Alarm():
+    def __init__(self, datetime=None, message=""):
+        self.__message = message
+        self.__datetime = datetime
+
+    def getDatetime(self):
+        return self.__datetime
+
+    def setDatetime(self, datetime=None):
+        self.__datetime = datetime
+        return self
+
+    def getMessage(self):
+        return self.__message
+
+
 def stop_alarm():
     '''
     stops the alarm, sending a stop signal to the speakers and stops the snooze functionality
@@ -30,12 +43,13 @@ def stop_alarm():
     global next_alarm
     global ringing
     global active_alarm
-    
+
     if active_alarm is True:
         print("stopping the alarm")
         repeat_counter = 0
         next_alarm = None
         mqtt_client.publish(config.MQTT_TOPIC_SPEAKERS, 'stop', config.MQTT_QOS)
+        mqtt_client.publish(config.MQTT_TOPIC_NIGHTSTAND_LCD, next_alarm.getMessage(), config.MQTT_QOS)
         active_alarm = False
         ringing = False
         # the lights will be turned off by the nightstand  when the button is pressed
@@ -124,7 +138,10 @@ def get_formatted_alarms():
 
         difference = timedelta(days=days_difference)
         formatted_alarm = formatted_alarm + difference
-        formatted_alarms.append(formatted_alarm)
+
+        # creates and saves the alarm in the formatted alarms
+        message = (alarm.find('message').text)
+        formatted_alarms.append(Alarm(formatted_alarm, message))
 
     return formatted_alarms
 
@@ -137,7 +154,7 @@ def get_next_alarm():
     alarms = get_formatted_alarms()
     next_alarm = alarms[0]
     for alarm in alarms:
-        if alarm < next_alarm:
+        if alarm.getDatetime() < next_alarm.getDatetime():
             next_alarm = alarm
     return next_alarm
 
@@ -154,7 +171,7 @@ def ring_alarm():
     ringing = True
     active_alarm = True
     repeat_counter += 1
-    print("ringing alarm:", next_alarm)
+    print("ringing alarm:", next_alarm.getDatetime())
     print("repaet no", repeat_counter)
     mqtt_client.publish(config.MQTT_TOPIC_SPEAKERS, "play " + config.ALARM_MUSIC, config.MQTT_QOS)
 
@@ -164,8 +181,8 @@ def ring_alarm():
         print("EOA")
         return
 
-    next_alarm = next_alarm + config.SNOOZE_TIME
-    print("new snooze set to:", next_alarm)
+    next_alarm.setDatetime(next_alarm.getDatetime() + config.SNOOZE_TIME)
+    print("new snooze set to:", next_alarm.getDatetime())
 
     # turns on the lights
     mqtt_client.publish(config.MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION, "1024,1024,1024", config.MQTT_QOS)
@@ -183,10 +200,10 @@ def alarm_pooling():
         if not next_alarm:
             print("there is no alarms in the xml file or the format is wrong")
             return
-        print("next alarm set at:", next_alarm)
+        print("next alarm set at:", next_alarm.getDatetime())
 
     # the time of the alarm has come
-    if next_alarm <= datetime.now():
+    if next_alarm.getDatetime() <= datetime.now():
         # rings the alarm
         ring_alarm()
     return
@@ -205,8 +222,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-################################################################################
-# End of script
-################################################################################
