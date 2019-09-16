@@ -67,12 +67,13 @@ void sleep_atmega()
 void button_press_pooling()
 {
     if ( digitalRead(0) == LOW ){
-        mqttClient.publish(MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION,"1024,100,50");
         delay(800);
         if (digitalRead(0) == LOW ){ // hold
             mqttClient.publish(MQTT_TOPIC_BUTTON,"hold");
+            mqttClient.publish(MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION,"0,0,0");
         } else { // press
             mqttClient.publish(MQTT_TOPIC_BUTTON,"press");
+            mqttClient.publish(MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION,"1024,100,50");
         }
         // wait until the button is release
         // if the button is hold for too long, the board will reset itself
@@ -81,8 +82,6 @@ void button_press_pooling()
         while (digitalRead(0) == LOW){
             delay(10);
         };
-        delay(5000);
-        mqttClient.publish(MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION,"0,0,0");        
     }
 }
 

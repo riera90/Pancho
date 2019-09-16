@@ -4,6 +4,7 @@ import time
 from datetime import datetime, timedelta
 import xml.etree.ElementTree as ET
 import paho.mqtt.client as mqtt
+import requests
 import config
 
 
@@ -35,6 +36,25 @@ class Alarm():
         return self.__message
 
 
+def get_meteo_report():
+    report = "tiempo: "+"cloudy"+"\ntemp: "+"13/25"
+    aemet_url = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/"+config.AEMET_MUNICIPE_CODE+"/?api_key="+config.AEMET_API_KEY
+    response = requests.get(aemet_url)
+    aemet_url = response.json()["datos"]
+    response = requests.get(aemet_url)
+    response = response.json()
+    wheather = response[0]['prediccion']['dia'][0]['estadoCielo'][0]['descripcion']
+    if wheather is "":
+        wheather = "soleado"
+
+    rain = str(response[0]['prediccion']['dia'][0]['probPrecipitacion'][0]['value'])
+
+    temp_min = str(response[0]['prediccion']['dia'][0]['temperatura']['minima'])
+    temp_max = str(response[0]['prediccion']['dia'][0]['temperatura']['maxima'])
+
+    return wheather+", "+rain+"%\ntemp: "+temp_min+"/"+temp_max+" C"
+
+
 def stop_alarm():
     '''
     stops the alarm, sending a stop signal to the speakers and stops the snooze functionality
@@ -47,28 +67,33 @@ def stop_alarm():
     if active_alarm is True:
         print("stopping the alarm")
         repeat_counter = 0
-        next_alarm = None
         mqtt_client.publish(config.MQTT_TOPIC_SPEAKERS, 'stop', config.MQTT_QOS)
         mqtt_client.publish(config.MQTT_TOPIC_NIGHTSTAND_LCD, next_alarm.getMessage(), config.MQTT_QOS)
+        next_alarm = None
         active_alarm = False
         ringing = False
         # the lights will be turned off by the nightstand  when the button is pressed
+
 
 def snooze_alarm():
     '''
     snoozes the alarm, sending a stop signal to the speakers and letting the snooze functionality do its job
     '''
     global ringing
-    
+    global next_alarm
+
     if ringing is True:
         print("snoozing the alarm")
         mqtt_client.publish(config.MQTT_TOPIC_SPEAKERS, 'stop', config.MQTT_QOS)
         ringing = False
+    mqtt_client.publish(config.MQTT_TOPIC_NIGHTSTAND_LCD, next_alarm.getMessage(), config.MQTT_QOS)
+    mqtt_client.publish(config.MQTT_TOPIC_NIGHTSTAND_LCD, get_meteo_report(), config.MQTT_QOS)
 
 
 # Define event callbacks
 def on_connect(client, userdata, flags, rc):
-    print("rc: " + str(rc))
+    #print("rc: " + str(rc))
+    pass
 
 def on_message(client, obj, msg):
     print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
@@ -80,13 +105,15 @@ def on_message(client, obj, msg):
         snooze_alarm()
 
 def on_publish(client, obj, mid):
-    print("mid: " + str(mid))
+    #print("mid: " + str(mid)
+    pass
 
 def on_subscribe(client, obj, mid, granted_qos):
     print("Subscribed: " + str(mid) + " " + str(granted_qos))
 
 def on_log(client, obj, level, string):
-    print(string)
+    #print(string)
+    pass
 
 # Assign event callbacks
 mqtt_client.on_message = on_message
