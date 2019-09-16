@@ -11,9 +11,6 @@ LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 void setup() {
     Serial.begin(BAUD_RATE);
     lcd.begin(16,2);
-    lcd.print("hi from Pancho!");
-    lcd.setCursor(0,1);
-    lcd.print("waking up...");
     size = 0;
 }
 

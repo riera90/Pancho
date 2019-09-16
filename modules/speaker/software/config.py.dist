@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+
+HOSTNAME = "Speakers"
+MQTT_BROKER = "localhost"
+MQTT_BROKER_PORT = 7707
+MQTT_USERNAME = "admin"
+MQTT_PASSWORD = "admin"
+MQTT_TOPIC = "/bedroom/speakers"
+MQTT_QOS = 0

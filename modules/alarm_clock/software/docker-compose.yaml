@@ -1,0 +1,7 @@
+version: "3"
+services:
+  alarm_clock:
+    build: .
+    hostname: alarm_clock
+    network_mode: host
+    restart: always

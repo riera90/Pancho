@@ -4,26 +4,9 @@
 #include <string.h>
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
+#include "config.h"
 
 
-#define STASSID "ssid"
-#define STAPSK  "passwd"
-#define HOSTNAME "Software station's led strip"
-#define MQTT_BROKER "localhost"
-#define MQTT_BROKER_PORT 7707
-#define MQTT_USERNAME "admin"
-#define MQTT_PASSWORD "admin"
-#define MQTT_TOPIC "/bedroom/software_station/led_strip"
-#define MQTT_QOS 0
-#define BAUD_RATE 9600
-#define BUFFER_LENGTH 255
-// pins
-#define RED 15
-#define GREEN 12
-#define BLUE 13
-#define BLINK 2
-// output resolution
-#define RESOLUTION 1024
 
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);

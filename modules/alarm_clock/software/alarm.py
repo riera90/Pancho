@@ -4,24 +4,7 @@ import time
 from datetime import datetime, timedelta
 import xml.etree.ElementTree as ET
 import paho.mqtt.client as mqtt
-
-################################################################################
-# Configuration
-################################################################################
-
-ALARMS_XML = "alarms.xml"
-SNOOZE_TIME = timedelta(minutes=5)
-REPEAT_NUMBER = 3
-ALARM_MUSIC = "music.flac"
-HOSTNAME = "Alarm clock"
-MQTT_BROKER = "localhost"
-MQTT_BROKER_PORT = 7707
-MQTT_USERNAME = "admin"
-MQTT_PASSWORD = "admin"
-MQTT_TOPIC_NIGHTSTAND_BUTTON = "/bedroom/nightstand/button"
-MQTT_TOPIC_SPEAKERS = "/bedroom/speakers"
-MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION = "/bedroom/software_station/led_strip"
-MQTT_QOS = 0
+import config
 
 ################################################################################
 # Beginning of script
@@ -33,10 +16,10 @@ ringing = False
 active_alarm = False
 
 # sets up the MQTT client
-mqtt_client = mqtt.Client(HOSTNAME)
-mqtt_client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
-mqtt_client.connect(MQTT_BROKER, MQTT_BROKER_PORT)
-mqtt_client.subscribe(MQTT_TOPIC_NIGHTSTAND_BUTTON, MQTT_QOS)
+mqtt_client = mqtt.Client(config.HOSTNAME)
+mqtt_client.username_pw_set(config.MQTT_USERNAME, config.MQTT_PASSWORD)
+mqtt_client.connect(config.MQTT_BROKER, config.MQTT_BROKER_PORT)
+mqtt_client.subscribe(config.MQTT_TOPIC_NIGHTSTAND_BUTTON, config.MQTT_QOS)
 
 
 def stop_alarm():
@@ -52,7 +35,7 @@ def stop_alarm():
         print("stopping the alarm")
         repeat_counter = 0
         next_alarm = None
-        mqtt_client.publish(MQTT_TOPIC_SPEAKERS, 'stop', MQTT_QOS)
+        mqtt_client.publish(config.MQTT_TOPIC_SPEAKERS, 'stop', config.MQTT_QOS)
         active_alarm = False
         ringing = False
         # the lights will be turned off by the nightstand  when the button is pressed
@@ -65,7 +48,7 @@ def snooze_alarm():
     
     if ringing is True:
         print("snoozing the alarm")
-        mqtt_client.publish(MQTT_TOPIC_SPEAKERS, 'stop', MQTT_QOS)
+        mqtt_client.publish(config.MQTT_TOPIC_SPEAKERS, 'stop', config.MQTT_QOS)
         ringing = False
 
 
@@ -103,7 +86,7 @@ def get_formatted_alarms():
     Gets the alarms (from the XML)
     :return: datetime array / None
     '''
-    tree = ET.parse(ALARMS_XML)
+    tree = ET.parse(config.ALARMS_XML)
     root = tree.getroot()
     alarms = root.findall('alarm')
 
@@ -173,19 +156,19 @@ def ring_alarm():
     repeat_counter += 1
     print("ringing alarm:", next_alarm)
     print("repaet no", repeat_counter)
-    mqtt_client.publish(MQTT_TOPIC_SPEAKERS, "play " + ALARM_MUSIC, MQTT_QOS)
+    mqtt_client.publish(config.MQTT_TOPIC_SPEAKERS, "play " + config.ALARM_MUSIC, config.MQTT_QOS)
 
-    if repeat_counter >= REPEAT_NUMBER: # the repeat counter has been already reached, canceling snooze functionality
+    if repeat_counter >= config.REPEAT_NUMBER: # the repeat counter has been already reached, canceling snooze functionality
         next_alarm = None
         repeat_counter = 0
         print("EOA")
         return
 
-    next_alarm = next_alarm + SNOOZE_TIME
+    next_alarm = next_alarm + config.SNOOZE_TIME
     print("new snooze set to:", next_alarm)
 
     # turns on the lights
-    mqtt_client.publish(MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION, "1024,1024,1024", MQTT_QOS)
+    mqtt_client.publish(config.MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION, "1024,1024,1024", config.MQTT_QOS)
 
     return
 

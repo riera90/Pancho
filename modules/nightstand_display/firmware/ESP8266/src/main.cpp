@@ -4,22 +4,7 @@
 #include <string.h>
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
-
-
-#define STASSID "ssid"
-#define STAPSK  "password"
-#define HOSTNAME "Nightstand display"
-#define MQTT_BROKER "localhost"
-#define MQTT_BROKER_PORT 7707
-#define MQTT_USERNAME "admin"
-#define MQTT_PASSWORD "admin"
-#define MQTT_TOPIC_LCD "/bedroom/nightstand/lcd"
-#define MQTT_TOPIC_BUTTON "/bedroom/nightstand/button"
-#define MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION "/bedroom/software_station/led_strip"
-#define MQTT_QOS 0
-#define BAUD_RATE 9600
-#define BUFFER_LENGTH 255
-#define TIME_PER_MESSAGE 5 // in secconds
+#include "config.h"
 
 
 WiFiClient wifiClient;
@@ -46,6 +31,7 @@ void wake_up_atmega()
 void display_on_lcd(String payload)
 {
     wake_up_atmega();
+    delay(100);
     Serial.print(payload.length());
     for (unsigned int i = 0; i < payload.length(); i++) {
         Serial.print(payload[i]);
