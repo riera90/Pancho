@@ -37,7 +37,15 @@ class Alarm():
 
 
 def get_meteo_report():
-    report = "tiempo: "+"cloudy"+"\ntemp: "+"13/25"
+    '''
+    Gets the meteorologic report from AEMET (spanish weather report agency)
+    and returns a string to be displayed at the nightstand display
+    (if available).
+    
+    This function output is in spanish, becouse it uses the AEMET api
+    (witch data is in spanish) 
+    :return: string
+    '''
     aemet_url = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/"+config.AEMET_MUNICIPE_CODE+"/?api_key="+config.AEMET_API_KEY
     response = requests.get(aemet_url)
     aemet_url = response.json()["datos"]
@@ -57,7 +65,8 @@ def get_meteo_report():
 
 def stop_alarm():
     '''
-    stops the alarm, sending a stop signal to the speakers and stops the snooze functionality
+    Stops the alarm, sending a stop signal to the speakers and stops the snooze
+    functionality
     '''
     global repeat_counter
     global next_alarm
@@ -77,7 +86,8 @@ def stop_alarm():
 
 def snooze_alarm():
     '''
-    snoozes the alarm, sending a stop signal to the speakers and letting the snooze functionality do its job
+    snoozes the alarm, sending a stop signal to the speakers and letting the
+    snooze functionality do its job
     '''
     global ringing
     global next_alarm
@@ -242,7 +252,7 @@ def main():
         try:
             mqtt_client.loop()
             alarm_pooling()
-            time.sleep(1)
+            time.sleep(0.25)
         except Exception as e:
             print(e)
 

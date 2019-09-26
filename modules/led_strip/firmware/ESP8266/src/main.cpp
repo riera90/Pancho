@@ -22,15 +22,20 @@ void reset()
     while (true); // reset the board (watchdog kicks in)
 }
 
-
+/**
+ * Parses the payload into the red, blue and green values and writes it to the
+ * PWM pins from the ESP to the MOSFETS con troling the led strip
+ * it also prints some debug information to the serial port at 9600 Bd
+ */
 void mqtt_callback(char* topic, byte* payload, unsigned int length) {
+    // dumps the payload into the buffer
     String buffer = "";
     for (size_t i = 0; i < length; i++) {
         buffer += (char)payload[i];
     }
     int red, green, blue;
     
-    
+    // parses the red from the buffer
     for (size_t i = 0; i < buffer.length(); i++) {
         if (buffer[i] == ',')
         {
@@ -40,7 +45,7 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
         }
     }
     
-    
+    // parses the green from the buffer
     for (size_t i = 0; i < buffer.length(); i++) {
         if (buffer[i] == ',')
         {
@@ -50,18 +55,21 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
         }
     }
     
+    // parses the blue (only value left in the buffer)
     blue = buffer.toInt();
     
-        
+    // writes the PWM values to the pins driving the MOSFETS
     analogWrite(RED, red);
     analogWrite(GREEN, green);
     analogWrite(BLUE, blue);
     
-    
+    // some debug info
     Serial.print("\nstate:\n\tR:"+String(red)+"\n\tG:"+String(green)+"\n\tB:"+String(blue)+"\n");
 }
 
-
+/**
+ * turn off the leds
+ */
 void clean_leds()
 {
     analogWrite(RED, 0);
@@ -69,18 +77,19 @@ void clean_leds()
     analogWrite(GREEN, 0); 
 }
 
-void delay_(){delay(1);}
 
 void setup()
 {
+    // sets the pinmode (MOSFETS driver pins) to output
     pinMode(RED, OUTPUT);
     pinMode(GREEN, OUTPUT);
     pinMode(BLUE, OUTPUT);
+    // set the value of said pins to zero
     clean_leds();
     
     Serial.begin(BAUD_RATE);
     
-    
+    // connect to the wifi
     WiFi.hostname(HOSTNAME);
     WiFi.begin(STASSID, STAPSK);
     
@@ -100,7 +109,7 @@ void setup()
     mqttClient.setServer(MQTT_BROKER, MQTT_BROKER_PORT);
     
     
-    
+    // check if the ESP is connected to the MQTT broker
     for (int i = 0; !mqttClient.connect(HOSTNAME, MQTT_USERNAME, MQTT_PASSWORD); i++) {
         if (i > 1000) { // 10000 ns if after 10 seconds if it is not connected
             Serial.print("couldn't connect to MQTT broker\n");
@@ -110,6 +119,7 @@ void setup()
     }
     Serial.print("Connected to MQTT broker\n");
     
+    // try to subscribe to the MQTT topic
     for (int i = 0; !mqttClient.subscribe(MQTT_TOPIC, MQTT_QOS); i++) {
         if (i > 1000) { // 10000 ns if after 10 seconds if it is not subscribed
             Serial.print("couldn't subscribe to the topic\n");    
@@ -117,6 +127,7 @@ void setup()
         }
         delay(10);
     }
+    // set the callback
     mqttClient.setCallback(mqtt_callback);
     
     Serial.print("All Systems Go\n");

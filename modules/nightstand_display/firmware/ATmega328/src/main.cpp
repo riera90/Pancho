@@ -32,14 +32,15 @@ void loop() {
         scroll = false;
     
         // prints the content of the given message
-        for (int i = 0, j = 0; i < size; i++, j++) {
+        for (size_t i = 0, j = 0; i < size; i++, j++) {
             // if a newline is entered, change the cursor to the 2nd line
             if (buffer[i] == '\n') {
                 lcd.setCursor(0,1);
                 j = 0;
             }
             else{
-                // if there is more than 16 characters in a line, enable scroll mode
+                // if there is more than 16 characters in a line,
+                // enable scroll mode
                 if (j == 16){
                     scroll = true;
                 }
@@ -47,7 +48,7 @@ void loop() {
             }
         }
     
-        // delay 5 seconds between texts ,activating scroll if there is
+        // delay 5 seconds between texts, activating scroll if there is
         for (size_t i = 0; i < 10; i++) {
             if (i == 0){
                 delay(1000);
