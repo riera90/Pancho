@@ -41,9 +41,9 @@ def get_meteo_report():
     Gets the meteorologic report from AEMET (spanish weather report agency)
     and returns a string to be displayed at the nightstand display
     (if available).
-    
+
     This function output is in spanish, becouse it uses the AEMET api
-    (witch data is in spanish) 
+    (witch data is in spanish)
     :return: string
     '''
     aemet_url = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/"+config.AEMET_MUNICIPE_CODE+"/?api_key="+config.AEMET_API_KEY
@@ -97,7 +97,7 @@ def snooze_alarm():
         mqtt_client.publish(config.MQTT_TOPIC_SPEAKERS, 'stop', config.MQTT_QOS)
         ringing = False
     mqtt_client.publish(config.MQTT_TOPIC_NIGHTSTAND_LCD, next_alarm.getMessage(), config.MQTT_QOS)
-    # mqtt_client.publish(config.MQTT_TOPIC_NIGHTSTAND_LCD, get_meteo_report(), config.MQTT_QOS)
+    mqtt_client.publish(config.MQTT_TOPIC_NIGHTSTAND_LCD, get_meteo_report(), config.MQTT_QOS)
 
 
 # Define event callbacks
@@ -204,7 +204,7 @@ def ring_alarm():
     global next_alarm
     global ringing
     global active_alarm
-    
+
     ringing = True
     active_alarm = True
     repeat_counter += 1
