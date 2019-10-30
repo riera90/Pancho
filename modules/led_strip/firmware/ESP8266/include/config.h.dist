@@ -11,7 +11,7 @@
 #define MQTT_TOPIC "/bedroom/software_station/led_strip"
 #define MQTT_QOS 0
 #define BAUD_RATE 9600
-#define BUFFER_LENGTH S255
+#define BUFFER_LENGTH 255
 // pins
 #define RED 15
 #define GREEN 12

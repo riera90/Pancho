@@ -76,8 +76,24 @@ def stop_alarm():
     if active_alarm is True:
         print("stopping the alarm")
         repeat_counter = 0
-        mqtt_client.publish(config.MQTT_TOPIC_SPEAKERS, 'stop', config.MQTT_QOS)
-        mqtt_client.publish(config.MQTT_TOPIC_NIGHTSTAND_LCD, next_alarm.getMessage(), config.MQTT_QOS)
+        mqtt_client.publish(
+            config.MQTT_TOPIC_SPEAKERS,
+            'stop',
+            config.MQTT_QOS
+        )
+
+        mqtt_client.publish(
+            config.MQTT_TOPIC_NIGHTSTAND_LCD,
+            next_alarm.getMessage(),
+            config.MQTT_QOS
+        )
+
+        mqtt_client.publish(
+            config.MQTT_TOPIC_NIGHTSTAND_LCD,
+            get_meteo_report(),
+            config.MQTT_QOS
+        )
+
         next_alarm = None
         active_alarm = False
         ringing = False
@@ -94,10 +110,24 @@ def snooze_alarm():
 
     if ringing is True:
         print("snoozing the alarm")
-        mqtt_client.publish(config.MQTT_TOPIC_SPEAKERS, 'stop', config.MQTT_QOS)
+        mqtt_client.publish(
+            config.MQTT_TOPIC_SPEAKERS,
+            'stop',
+            config.MQTT_QOS
+        )
+
         ringing = False
-    mqtt_client.publish(config.MQTT_TOPIC_NIGHTSTAND_LCD, next_alarm.getMessage(), config.MQTT_QOS)
-    mqtt_client.publish(config.MQTT_TOPIC_NIGHTSTAND_LCD, get_meteo_report(), config.MQTT_QOS)
+    mqtt_client.publish(
+        config.MQTT_TOPIC_NIGHTSTAND_LCD,
+        next_alarm.getMessage(),
+        config.MQTT_QOS
+    )
+
+    mqtt_client.publish(
+        config.MQTT_TOPIC_NIGHTSTAND_LCD,
+        get_meteo_report(),
+        config.MQTT_QOS
+    )
 
 
 # Define event callbacks
@@ -125,11 +155,16 @@ def on_log(client, obj, level, string):
     #print(string)
     pass
 
+def on_disconnect(client, userdata, rc):
+    if rc != 0:
+        print("Unexpected disconnection.")
+
 # Assign event callbacks
 mqtt_client.on_message = on_message
 mqtt_client.on_connect = on_connect
 mqtt_client.on_publish = on_publish
 mqtt_client.on_subscribe = on_subscribe
+mqtt_client.on_disconnect = on_disconnect
 
 
 def get_formatted_alarms():
@@ -210,7 +245,11 @@ def ring_alarm():
     repeat_counter += 1
     print("ringing alarm:", next_alarm.getDatetime())
     print("repaet no", repeat_counter)
-    mqtt_client.publish(config.MQTT_TOPIC_SPEAKERS, "play " + config.ALARM_MUSIC, config.MQTT_QOS)
+    mqtt_client.publish(
+        config.MQTT_TOPIC_SPEAKERS,
+        "play " + config.ALARM_MUSIC,
+        config.MQTT_QOS
+    )
 
     if repeat_counter >= config.REPEAT_NUMBER: # the repeat counter has been already reached, canceling snooze functionality
         next_alarm = None
@@ -222,7 +261,16 @@ def ring_alarm():
     print("new snooze set to:", next_alarm.getDatetime())
 
     # turns on the lights
-    mqtt_client.publish(config.MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION, "1024,1024,1024", config.MQTT_QOS)
+    mqtt_client.publish(
+        config.MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION,
+        config.WAKE_UP_LED_RGB_VALUES,
+        config.MQTT_QOS
+    )
+    mqtt_client.publish(
+        config.MQTT_TOPIC_LED_STRIP_HARDWARE_STATION,
+        config.WAKE_UP_LED_RGB_VALUES,
+        config.MQTT_QOS
+    )
 
     return
 

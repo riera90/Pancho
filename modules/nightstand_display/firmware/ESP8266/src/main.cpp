@@ -37,7 +37,7 @@ void display_on_lcd(String payload)
         Serial.print(payload[i]);
     }
     displaying = true;
-    counter += TIME_PER_MESSAGE * 667; // adjusting for the 3 ns delay in loop 
+    counter += TIME_PER_MESSAGE * 667; // adjusting for the 3 ns delay in loop
 }
 
 
@@ -69,11 +69,32 @@ void button_press_pooling()
     if ( digitalRead(0) == LOW ){
         delay(800);
         if (digitalRead(0) == LOW ){ // hold
-            mqttClient.publish(MQTT_TOPIC_BUTTON,"hold");
-            mqttClient.publish(MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION,"0,0,0");
+            mqttClient.publish(
+                MQTT_TOPIC_BUTTON,
+                "hold"
+            );
+            mqttClient.publish(
+                MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION,
+                "0,0,0"
+            );
+            mqttClient.publish(
+                MQTT_TOPIC_LED_STRIP_HARDWARE_STATION,
+                "0,0,0"
+            );
+            
         } else { // press
-            mqttClient.publish(MQTT_TOPIC_BUTTON,"press");
-            mqttClient.publish(MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION,"1024,100,50");
+            mqttClient.publish(
+                MQTT_TOPIC_BUTTON,
+                "press"
+            );
+            mqttClient.publish(
+                MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION,
+                "1024,100,50"
+            );
+            mqttClient.publish(
+                MQTT_TOPIC_LED_STRIP_HARDWARE_STATION,
+                "1024,100,50"
+            );
         }
         // wait until the button is release
         // if the button is hold for too long, the board will reset itself
@@ -90,67 +111,67 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
     for (size_t i = 0; i < length; i++) {
         buffer += (char)payload[i];
     }
-    
+
     display_on_lcd(buffer);
 }
 
 
 void setup() {
     // sets the gpio to their modes 0 for the button and 2 for the transistors
-    pinMode(2, OUTPUT); 
+    pinMode(2, OUTPUT);
     pinMode(0, INPUT);
     // enables the LCD and ATMega (similar to wake_up_atmega function)
     digitalWrite(2, HIGH);
-    
+
     // sets up the serial connection for the ATMega
     Serial.begin(BAUD_RATE);
-    
+
     // sets up the WiFi connection
     WiFi.hostname(HOSTNAME);
     WiFi.begin(STASSID, STAPSK);
-    
+
     // checks if the ESP is connected to the network, if not, wait until it is
     for (int i = 0; WiFi.status() != WL_CONNECTED; i++) {
         if (i > 1000) { // 10000 ns if after 10 seconds if it si not connected
-            buffer = String("couldn't connect\nto ")+String(STASSID);    
+            buffer = String("couldn't connect\nto ")+String(STASSID);
             display_on_lcd(buffer);
             reset();
         }
         delay(10);
     }
-    
+
     // display what the ESP hostname is and where is connected
     buffer = String(HOSTNAME)+"\nat "+String(STASSID);
     display_on_lcd(buffer);
-    
+
     // connect to the mqtt broker
     mqttClient.setServer(MQTT_BROKER, MQTT_BROKER_PORT);
-    
-    
-    
+
+
+
     for (int i = 0; !mqttClient.connect(HOSTNAME, MQTT_USERNAME, MQTT_PASSWORD); i++) {
         if (i > 1000) { // 10000 ns if after 10 seconds if it is not connected
-            buffer = String("couldn't connect\nto MQTT broker");    
+            buffer = String("couldn't connect\nto MQTT broker");
             display_on_lcd(buffer);
             reset();
         }
         delay(10);
     }
     display_on_lcd("Connected to\nMQTT broker");
-    
-    
+
+
     for (int i = 0; !mqttClient.subscribe(MQTT_TOPIC_LCD, MQTT_QOS); i++) {
         if (i > 1000) { // 10000 ns if after 10 seconds if it is not subscribed
-            buffer = String("couldn't subscribe\nto the topic");    
+            buffer = String("couldn't subscribe\nto the topic");
             display_on_lcd(buffer);
             reset();
         }
         delay(10);
     }
     mqttClient.setCallback(mqtt_callback);
-    
+
     display_on_lcd("All Systems Go");
-    
+
 }
 
 
@@ -158,22 +179,22 @@ void loop()
 {
     // polling for button press
     button_press_pooling();
-    
+
     // pooling for incomming messages at MQTT_TOPIC_LCD
     mqttClient.loop();
-    
+
     if (!mqttClient.connected()) { // reconnect if not connected
         // wait untill connection
         for (int i = 0; !mqttClient.connect(HOSTNAME, MQTT_USERNAME, MQTT_PASSWORD); i++) {
             if (i > 1000) { // 10000 ns if after 10 seconds if it is not connected
-                buffer = String("couldn't connect\nto MQTT broker");    
+                buffer = String("couldn't connect\nto MQTT broker");
                 display_on_lcd(buffer);
                 reset();
             }
             delay(10);
         }
     }
-    
+
     // sleep algorithm
     // checks if the atmega is doing work
     if (displaying) {

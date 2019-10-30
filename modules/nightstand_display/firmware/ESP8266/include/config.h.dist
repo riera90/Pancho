@@ -11,6 +11,7 @@
 #define MQTT_TOPIC_LCD "/bedroom/nightstand/lcd"
 #define MQTT_TOPIC_BUTTON "/bedroom/nightstand/button"
 #define MQTT_TOPIC_LED_STRIP_SOFTWARE_STATION "/bedroom/software_station/led_strip"
+#define MQTT_TOPIC_LED_STRIP_HARDWARE_STATION "/bedroom/hardware_station/led_strip"
 #define MQTT_QOS 0
 #define BAUD_RATE 9600
 #define BUFFER_LENGTH 255
