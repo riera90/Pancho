@@ -1,4 +1,4 @@
-# MQTT controlled led strip
+# MQTT controlled led strip (common anode)
 
 **Difficulty: Easy**  
 **Economic cost: Medium (20-25€)**  
@@ -25,6 +25,7 @@ Just a led strip that can be controlled via MQTT
 - 1x 1x4 pin socket (led socket)
 - 1x 1x3 pin socket (programming socket)
 - 1x power jack
+- 1x common anode RGB led strip
 
 ### Extra consumables
 - 1x 5V power supply
