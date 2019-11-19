@@ -30,7 +30,7 @@ An alarm snooze/stop button and a display to show the get out of home time and w
 - 1x 16Mhz crystal oscillator
 - 1x 28 pin dip socket
 - 1x 2x4 pin socket
-    
+
 ### Extra consumables
 - 1x 5V power supply
 - dot matrix PCB
@@ -53,4 +53,3 @@ An alarm snooze/stop button and a display to show the get out of home time and w
 ![naked front](extra/front.jpg)
 
 ![back side](extra/back.jpg)
-

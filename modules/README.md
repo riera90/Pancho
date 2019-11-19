@@ -5,9 +5,7 @@ Some are fully done and others are in develop, please check the *README.md* of t
 
 ***
 
-#### Each module has a *readme* witch contains:
-
-
+Each module has a *readme* witch contains:   
 
 ***The name of the module***  
 ***A very brief overlook at the module complexity***
@@ -28,3 +26,9 @@ If there is some electronics involved, a schematics diagram will be provided.
 
 <!-- ***A video about the project***  
 About how to build the module and a step by step explanation of each part of the module -->
+
+***
+
+# FAQ
+***Why some of the modules have more than one version if git is used?***  
+the software is easily updated, but the hardware is not, having the schematics and it's firmware around is a good idea if you are having trouble with an older version module.
